@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Usług Sieciowych</title>
+	
+	
+	<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-X64VMTGXBE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-X64VMTGXBE');
+</script>
+	
+	
+	
+	
+	
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -22,7 +38,7 @@
 
   let ostatniWygenerowanyCiag = '';
 
-  window.generujCiag = function () {
+window.generujCiag = function () {
     const katalog = document.getElementById('katalog').value;
     const magazyn = document.getElementById('magazyn').value;
     const skan = document.getElementById('skan').value;
@@ -30,21 +46,24 @@
     const ilosc = document.getElementById('ilosc').value;
 
     if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
-      alert('Proszę wypełnić wszystkie pola!');
-      return;
+        alert('Proszę wypełnić wszystkie pola!');
+        return;
     }
 
+    // Użyj tej samej metody co w stopce
     const dzisiaj = new Date();
-    const data = dzisiaj.toISOString().split('T')[0];
+    const data = dzisiaj.toLocaleDateString('pl-PL', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    }).split('.').reverse().join('-');
+
     const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
 
-    // Zapamiętaj ciąg
     ostatniWygenerowanyCiag = wynik;
-
-    // Pokaż go użytkownikowi
     document.getElementById('wynik').textContent = wynik;
     document.getElementById('result').style.display = 'block';
-  }
+}
 
   window.zapiszWynik = async function () {
     if (!ostatniWygenerowanyCiag) {
@@ -492,6 +511,7 @@
         
         <footer>
             <p>Skaner &copy; 2026 | Daniel B.: <span class="highlight" id="current-date"></span></p>
+		
         </footer>
     </div>
 
@@ -517,6 +537,11 @@
 
 
 
+
+<script>
+document.getElementById('debug-date').textContent = "Debug: " + new Date();
+console.log("Debug date:", new Date());
+</script>
 
     <script>
         // Ustaw aktualną datę w stopce
@@ -654,30 +679,36 @@ function startCamera() {
         }
         
         // Funkcja generująca ciąg
-        function generujCiag() {
-            const katalog = document.getElementById('katalog').value;
-            const magazyn = document.getElementById('magazyn').value;
-            const skan = document.getElementById('skan').value;
-            const lokalizacja = document.getElementById('lokalizacja').value;
-            const ilosc = document.getElementById('ilosc').value;
-            
-            // Sprawdzenie czy wszystkie pola są wypełnione
-            if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
-                alert('Proszę wypełnić wszystkie pola!');
-                return;
-            }
-            
-            // Pobranie aktualnej daty w formacie RRRR-MM-DD
-            const dzisiaj = new Date();
-            const data = dzisiaj.toISOString().split('T')[0];
-            
-            // Generowanie ciągu tekstowego
-            const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
-            
-            // Wyświetlenie wyniku
-            document.getElementById('wynik').textContent = wynik;
-            document.getElementById('result').style.display = 'block';
-        }
+window.generujCiag = function () {
+    const katalog = document.getElementById('katalog').value;
+    const magazyn = document.getElementById('magazyn').value;
+    const skan = document.getElementById('skan').value;
+    const lokalizacja = document.getElementById('lokalizacja').value;
+    const ilosc = document.getElementById('ilosc').value;
+
+    if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
+        alert('Proszę wypełnić wszystkie pola!');
+        return;
+    }
+
+    const dzisiaj = new Date();
+    const data = dzisiaj.getFullYear() + '-' + 
+                String(dzisiaj.getMonth() + 1).padStart(2, '0') + '-' + 
+                String(dzisiaj.getDate()).padStart(2, '0');
+    const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
+
+    ostatniWygenerowanyCiag = wynik;
+    document.getElementById('wynik').textContent = wynik;
+    document.getElementById('result').style.display = 'block';
+}
+
+// Ustaw aktualną godzinę w polu godzina
+document.addEventListener('DOMContentLoaded', function() {
+    const now = new Date();
+    const currentHour = now.getHours().toString().padStart(2, '0');
+    const currentMinute = now.getMinutes().toString().padStart(2, '0');
+    document.getElementById('godzina').value = `${currentHour}:${currentMinute}`;
+});
         
         // Funkcja kopiująca do schowka
         function kopiujDoSchowka() {
