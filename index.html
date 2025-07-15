@@ -462,17 +462,17 @@ function startCamera() {
             type: "LiveStream",
             target: document.querySelector('#camera-container'),
             constraints: {
-                facingMode: "environment"
+                facingMode: "environment" // tylna kamera na telefonie
             }
         },
         decoder: {
-            readers: ["ean_reader", "code_128_reader"] // dodaj inne typy jeśli potrzebne
+            readers: ["code_128_reader"] // tylko Code 128, bo obsługuje znaki jak "-"
         }
     }, function(err) {
         if (err) {
             console.error(err);
-            document.getElementById('barcode-result').textContent = 
-                'Błąd: Nie udało się uruchomić skanera.';
+            document.getElementById('barcode-result').textContent =
+                '❌ Błąd: Nie udało się uruchomić skanera.';
             return;
         }
         Quagga.start();
@@ -480,13 +480,23 @@ function startCamera() {
 
     Quagga.onDetected(function(result) {
         const kod = result.codeResult.code;
-        document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
-        document.getElementById(currentScannerTarget).value = kod;
 
-        setTimeout(() => {
-            Quagga.stop();
-            closeScanner();
-        }, 1000);
+        if (!kod) return;
+
+        // Sprawdzenie, czy kod pasuje do formatu NP-K01-P2
+        const wzorzec = /^[A-Z]{2}-K\d{2}-P\d$/;
+        if (wzorzec.test(kod)) {
+            document.getElementById('barcode-result').textContent = `✅ Zeskanowano: ${kod}`;
+            document.getElementById(currentScannerTarget).value = kod;
+
+            // Zatrzymanie skanera po 1 sekundzie
+            setTimeout(() => {
+                Quagga.stop();
+                closeScanner();
+            }, 1000);
+        } else {
+            document.getElementById('barcode-result').textContent = `❌ Zły format: ${kod}`;
+        }
     });
 }
 
