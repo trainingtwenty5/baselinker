@@ -665,23 +665,33 @@ function startCamera() {
 	
 	
 	<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+	  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+	  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBdhMIiqetOfDGP85ERxtgwn3AXR50pBcE",
-    authDomain: "base-468e0.firebaseapp.com",
-    projectId: "base-468e0",
-    storageBucket: "base-468e0.firebasestorage.app",
-    messagingSenderId: "829161895559",
-    appId: "1:829161895559:web:d832541aac05b35847ea22"
-  };
+	  const firebaseConfig = {
+		apiKey: "AIzaSyBdhMIiqetOfDGP85ERxtgwn3AXR50pBcE",
+		authDomain: "base-468e0.firebaseapp.com",
+		projectId: "base-468e0",
+		storageBucket: "base-468e0.firebasestorage.app",
+		messagingSenderId: "829161895559",
+		appId: "1:829161895559:web:d832541aac05b35847ea22"
+	  };
 
-  // Inicjalizacja Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+	  // Inicjalizacja Firebase
+	  const app = initializeApp(firebaseConfig);
+	  const db = getFirestore(app);
 
-  // Tutaj możesz dodać dalszą logikę, np. funkcje zapisu, generowania itp.
+
+	async function zapiszDoFirestore(dane) {
+	  try {
+		const docRef = await addDoc(collection(db, "twoja_kolekcja"), dane);
+		console.log("Dokument zapisany z ID:", docRef.id);
+		alert("Dane zapisane!");
+	  } catch (e) {
+		console.error("Błąd zapisu dokumentu:", e);
+		alert("Błąd podczas zapisu danych");
+	  }
+	}
 </script>
 	
 	
