@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Usług Sieciowych</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        select:focus, input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .input-group > div {
+            flex: 1;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, #2980b9, #1d6fa5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .result-container {
+            margin-top: 30px;
+            padding: 25px;
+            background: #e8f4fc;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+            display: none;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .result-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+        }
+        
+        .result-content {
+            font-size: 1.3rem;
+            word-break: break-all;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            font-family: monospace;
+            border: 1px solid #3498db;
+        }
+        
+        .copy-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #219653;
+        }
+        
+        .scan-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .scan-input {
+            flex: 3;
+        }
+        
+        .camera-btn {
+            flex: 1;
+            background: linear-gradient(to right, #9b59b6, #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .camera-btn:hover {
+            background: linear-gradient(to right, #8e44ad, #7d3c98);
+        }
+        
+        .info-text {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+        
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .scan-section {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Generator Usług Sieciowych</h1>
+            <div class="subtitle">Generuj ciągi znaków na podstawie wybranych parametrów</div>
+        </header>
+        
+        <div class="content">
+            <div class="form-section">
+                <h2>Parametry usługi</h2>
+                
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="katalog">Katalog:</label>
+                        <select id="katalog">
+                            <option value="">-- Wybierz pozycję --</option>
+                            <option value="15312">Lizzard</option>
+                            <option value="7313">Wystawione</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="magazyn">Magazyn:</label>
+                        <select id="magazyn">
+                            <option value="">-- Wybierz magazyn --</option>
+                            <option value="8644">R</option>
+                            <option value="22547">Osetno</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h2>Skanowanie i ilość</h2>
+                
+                <div class="form-group">
+                    <label for="skan">Skanuj kod kreskowy:</label>
+                    <div class="scan-section">
+                        <input type="text" id="skan" class="scan-input" placeholder="Zeskanuj kod lub wpisz ręcznie">
+                        <button class="camera-btn" onclick="simulateScan()">Użyj aparatu</button>
+                    </div>
+                    <div class="info-text">Możesz zeskanować kod za pomocą telefonu lub wpisać ręcznie</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ilosc">Ilość sztuk:</label>
+                    <input type="number" id="ilosc" min="1" value="1">
+                </div>
+            </div>
+            
+            <button class="btn" onclick="generujCiag()">Generuj i zatwierdź ciąg</button>
+            
+            <div class="result-container" id="result">
+                <div class="result-header">
+                    <div class="result-title">Wygenerowany ciąg:</div>
+                    <button class="copy-btn" onclick="kopiujDoSchowka()">Kopiuj</button>
+                </div>
+                <div class="result-content" id="wynik"></div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Generator usług sieciowych &copy; 2023 | Wygenerowano: <span class="highlight" id="current-date"></span></p>
+        </footer>
+    </div>
+
+    <script>
+        // Ustaw aktualną datę w stopce
+        const today = new Date();
+        document.getElementById('current-date').textContent = today.toLocaleDateString('pl-PL');
+        
+        // Funkcja generująca ciąg znaków
+        function generujCiag() {
+            const katalog = document.getElementById('katalog').value;
+            const magazyn = document.getElementById('magazyn').value;
+            const skan = document.getElementById('skan').value;
+            const ilosc = document.getElementById('ilosc').value;
+            
+            // Sprawdzenie czy wszystkie pola są wypełnione
+            if (!katalog || !magazyn || !skan || !ilosc) {
+                alert('Proszę wypełnić wszystkie pola!');
+                return;
+            }
+            
+            // Pobranie aktualnej daty w formacie RRRR-MM-DD
+            const dzisiaj = new Date();
+            const data = dzisiaj.toISOString().split('T')[0];
+            
+            // Generowanie ciągu tekstowego
+            const wynik = `${data};${katalog};${magazyn};${skan};${ilosc}`;
+            
+            // Wyświetlenie wyniku
+            document.getElementById('wynik').textContent = wynik;
+            document.getElementById('result').style.display = 'block';
+        }
+        
+        // Funkcja kopiująca do schowka
+        function kopiujDoSchowka() {
+            const wynik = document.getElementById('wynik').textContent;
+            navigator.clipboard.writeText(wynik)
+                .then(() => {
+                    alert('Skopiowano do schowka!');
+                })
+                .catch(err => {
+                    console.error('Błąd kopiowania: ', err);
+                    alert('Nie udało się skopiować do schowka.');
+                });
+        }
+        
+        // Symulacja skanowania (w prawdziwej aplikacji to byłoby połączone z API kamery)
+        function simulateScan() {
+            // Generowanie przykładowego kodu kreskowego
+            const barcode = '590123456789' + Math.floor(100 + Math.random() * 900);
+            document.getElementById('skan').value = barcode;
+            
+            // Symulacja focusu na polu ilości
+            document.getElementById('ilosc').focus();
+        }
+        
+        // Skrót klawiszowy dla przycisku generowania (Enter)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                generujCiag();
+            }
+        });
+    </script>
+</body>
+</html>
