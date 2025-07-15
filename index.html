@@ -6,6 +6,7 @@
     <title>Generator Usług Sieciowych</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.19.1"></script>
 
 	<style>
         * {
@@ -455,40 +456,55 @@
         }
         
      // Funkcja uruchamiająca kamerę
-function startCamera() {
-    Quagga.init({
-        inputStream: {
-            name: "Live",
-            type: "LiveStream",
-            target: document.querySelector('#camera-container'),
-            constraints: {
-                facingMode: "environment"
+   // Funkcja uruchamiająca kamerę
+        async function startCamera() {
+            if (isScanning) return;
+            
+            isScanning = true;
+            
+            // Utwórz czytnik kodów
+            codeReader = new ZXing.BrowserMultiFormatReader();
+            
+            try {
+                // Uzyskaj dostęp do kamery
+                const videoInputDevices = await ZXing.BrowserMultiFormatReader.listVideoInputDevices();
+                
+                // Wybierz pierwszą dostępną kamerę
+                const selectedDeviceId = videoInputDevices[0].deviceId;
+                
+                // Ustaw kontener kamery
+                const videoElement = document.getElementById('camera-preview');
+                
+                // Dekoduj kody z kamery
+                await codeReader.decodeFromVideoDevice(
+                    selectedDeviceId, 
+                    videoElement, 
+                    (result, err) => {
+                        if (result) {
+                            // Pobierz wynik skanowania
+                            const code = result.text;
+                            document.getElementById('barcode-result').textContent = `Zeskanowano: ${code}`;
+                            document.getElementById(currentScannerTarget).value = code;
+                            
+                            // Zamknij skaner po 1 sekundzie
+                            setTimeout(() => {
+                                closeScanner();
+                            }, 1000);
+                        }
+                        
+                        if (err && !(err instanceof ZXing.NotFoundException)) {
+                            console.error(err);
+                        }
+                    }
+                );
+                
+            } catch (err) {
+                console.error('Błąd kamery:', err);
+                document.getElementById('barcode-result').textContent = 
+                    'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
+                isScanning = false;
             }
-        },
-        decoder: {
-            readers: ["ean_reader", "code_128_reader"] // dodaj inne typy jeśli potrzebne
         }
-    }, function(err) {
-        if (err) {
-            console.error(err);
-            document.getElementById('barcode-result').textContent = 
-                'Błąd: Nie udało się uruchomić skanera.';
-            return;
-        }
-        Quagga.start();
-    });
-
-    Quagga.onDetected(function(result) {
-        const kod = result.codeResult.code;
-        document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
-        document.getElementById(currentScannerTarget).value = kod;
-
-        setTimeout(() => {
-            Quagga.stop();
-            closeScanner();
-        }, 1000);
-    });
-}
 
         
         // Funkcja rozpoznająca kody kreskowe
