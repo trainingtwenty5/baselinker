@@ -455,28 +455,41 @@
         }
         
      // Funkcja uruchamiająca kamerę
-        async function startCamera() {
-            try {
-                const constraints = {
-                    video: {
-                        facingMode: 'environment' // Używamy tylnej kamery
-                    }
-                };
-                
-                stream = await navigator.mediaDevices.getUserMedia(constraints);
-                const video = document.getElementById('camera-preview');
-                video.srcObject = stream;
-                video.play();
-                
-                // Rozpocznij rozpoznawanie kodów
-                scanForBarcodes();
-                
-            } catch (err) {
-                console.error('Błąd kamery:', err);
-                document.getElementById('barcode-result').textContent = 
-                    'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
+function startCamera() {
+    Quagga.init({
+        inputStream: {
+            name: "Live",
+            type: "LiveStream",
+            target: document.querySelector('#camera-container'),
+            constraints: {
+                facingMode: "environment"
             }
+        },
+        decoder: {
+            readers: ["ean_reader", "code_128_reader"] // dodaj inne typy jeśli potrzebne
         }
+    }, function(err) {
+        if (err) {
+            console.error(err);
+            document.getElementById('barcode-result').textContent = 
+                'Błąd: Nie udało się uruchomić skanera.';
+            return;
+        }
+        Quagga.start();
+    });
+
+    Quagga.onDetected(function(result) {
+        const kod = result.codeResult.code;
+        document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
+        document.getElementById(currentScannerTarget).value = kod;
+
+        setTimeout(() => {
+            Quagga.stop();
+            closeScanner();
+        }, 1000);
+    });
+}
+
         
         // Funkcja rozpoznająca kody kreskowe
         function scanForBarcodes() {
