@@ -338,267 +338,223 @@
         }
     </style>
 </head>
+
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generator Usług Sieciowych</title>
+  <script src="https://unpkg.com/ @zxing/library@latest"></script>
+</head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Generator Usług Sieciowych</h1>
-            <div class="subtitle">Generuj ciągi znaków na podstawie wybranych parametrów</div>
-        </header>
-        
-        <div class="content">
-            <div class="form-section">
-                <h2>Parametry usługi</h2>
-                
-                <div class="input-group">
-                    <div class="form-group">
-                        <label for="katalog">Katalog:</label>
-                        <select id="katalog">
-                            <option value="">-- Wybierz pozycję --</option>
-                            <option value="15312">Lizzard</option>
-                            <option value="7313">Wystawione</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="magazyn">Magazyn:</label>
-                        <select id="magazyn">
-                            <option value="">-- Wybierz magazyn --</option>
-                            <option value="8644">R</option>
-                            <option value="22547">Osetno</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-section">
-                <h2>Skanowanie i ilość</h2>
-                
-                <div class="form-group">
-                    <label for="skan">Skanuj kod produktu:</label>
-                    <div class="scan-section">
-                        <input type="text" id="skan" class="scan-input" placeholder="Zeskanuj kod lub wpisz ręcznie">
-                        <button class="camera-btn" id="open-camera-product">
-                            <i class="fas fa-camera"></i> Skanuj
-                        </button>
-                    </div>
-                    <div class="info-text">Możesz zeskanować kod za pomocą telefonu</div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="lokalizacja">Skanuj lokalizację:</label>
-                    <div class="scan-section">
-                        <input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację">
-                        <button class="camera-btn" id="open-camera-location">
-                            <i class="fas fa-camera"></i> Skanuj
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="ilosc">Ilość sztuk:</label>
-                    <input type="number" id="ilosc" min="1" value="1">
-                </div>
-            </div>
-            
-            <button class="btn" id="generate-btn">Generuj i zatwierdź ciąg</button>
-            
-            <div class="result-container" id="result">
-                <div class="result-header">
-                    <div class="result-title">Wygenerowany ciąg:</div>
-                    <button class="copy-btn" id="copy-btn">Kopiuj</button>
-                </div>
-                <div class="result-content" id="wynik"></div>
-            </div>
-        </div>
-        
-        <footer>
-            <p>Generator usług sieciowych &copy; 2023 | Wygenerowano: <span class="highlight" id="current-date"></span></p>
-        </footer>
-    </div>
+  <div class="container">
+    <header>
+      <h1>Generator Usług Sieciowych</h1>
+      <div class="subtitle">Generuj ciągi znaków na podstawie wybranych parametrów</div>
+    </header>
 
-    <!-- Modal do skanowania kodu kreskowego -->
-    <div id="scanner-modal" class="modal">
-        <span class="close">&times;</span>
-        <div class="modal-content">
-            <h2 style="color: white;">Skaner kodów kreskowych</h2>
-            <div id="camera-container">
-                <video id="camera-preview" playsinline></video>
-                <div id="scanner-guide">
-                    <div class="scanner-text">Umieść kod w ramce</div>
-                </div>
-            </div>
-            <div id="barcode-result"></div>
-            <button class="btn" id="stop-camera" style="background: linear-gradient(to right, #e74c3c, #c0392b);">
-                <i class="fas fa-times-circle"></i> Zamknij skaner
+    <div class="content">
+      <div class="form-section">
+        <h2>Parametry usługi</h2>
+        <div class="input-group">
+          <div class="form-group">
+            <label for="katalog">Katalog:</label>
+            <select id="katalog">
+              <option value="">-- Wybierz pozycję --</option>
+              <option value="15312">Lizzard</option>
+              <option value="7313">Wystawione</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="magazyn">Magazyn:</label>
+            <select id="magazyn">
+              <option value="">-- Wybierz magazyn --</option>
+              <option value="8644">R</option>
+              <option value="22547">Osetno</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Skanowanie i ilość</h2>
+        <div class="form-group">
+          <label for="skan">Skanuj kod produktu:</label>
+          <div class="scan-section">
+            <input type="text" id="skan" class="scan-input" placeholder="Zeskanuj kod lub wpisz ręcznie"/>
+            <button class="camera-btn" id="open-camera-product">
+              <i class="fas fa-camera"></i> Skanuj
             </button>
+          </div>
+          <div class="info-text">Możesz zeskanować kod za pomocą telefonu</div>
         </div>
+
+        <div class="form-group">
+          <label for="lokalizacja">Skanuj lokalizację:</label>
+          <div class="scan-section">
+            <input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację"/>
+            <button class="camera-btn" id="open-camera-location">
+              <i class="fas fa-camera"></i> Skanuj
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="ilosc">Ilość sztuk:</label>
+          <input type="number" id="ilosc" min="1" value="1"/>
+        </div>
+      </div>
+
+      <button class="btn" id="generate-btn">Generuj i zatwierdź ciąg</button>
+
+      <div class="result-container" id="result">
+        <div class="result-header">
+          <div class="result-title">Wygenerowany ciąg:</div>
+          <button class="copy-btn" id="copy-btn">Kopiuj</button>
+        </div>
+        <div class="result-content" id="wynik"></div>
+      </div>
     </div>
 
-    <script>
-        // Ustaw aktualną datę w stopce
-        const today = new Date();
-        document.getElementById('current-date').textContent = today.toLocaleDateString('pl-PL');
-        
-        // Zmienne globalne
-        let stream = null;
-        let currentScannerTarget = null;
-        const modal = document.getElementById('scanner-modal');
-        
-        // Funkcja otwierająca skaner
-        function openScanner(targetId) {
-            currentScannerTarget = targetId;
-            modal.style.display = 'block';
-            document.getElementById('barcode-result').textContent = '';
-            startCamera();
+    <footer>
+      <p>Generator usług sieciowych &copy; 2023 | Wygenerowano: <span class="highlight" id="current-date"></span></p>
+    </footer>
+  </div>
+
+  <!-- Modal do skanowania -->
+  <div id="scanner-modal" class="modal">
+    <span class="close">&times;</span>
+    <div class="modal-content">
+      <h2 style="color: white;">Skaner kodów kreskowych</h2>
+      <div id="camera-container">
+        <video id="camera-preview" width="300" height="200" style="border:1px solid black"></video>
+        <div id="scanner-guide">
+          <div class="scanner-text">Umieść kod w ramce</div>
+        </div>
+      </div>
+      <div id="barcode-result"></div>
+      <button class="btn" id="stop-camera" style="background: linear-gradient(to right, #e74c3c, #c0392b);">
+        <i class="fas fa-times-circle"></i> Zamknij skaner
+      </button>
+    </div>
+  </div>
+
+  <!-- Skrypt dla ZXing -->
+  <script>
+    // Ustaw aktualną datę w stopce
+    const today = new Date();
+    document.getElementById('current-date').textContent = today.toLocaleDateString('pl-PL');
+
+    // Zmienne globalne
+    let isScanning = false;
+    let codeReader = null;
+    let currentScannerTarget = null;
+    const modal = document.getElementById('scanner-modal');
+
+    async function startCamera(targetId) {
+      currentScannerTarget = targetId;
+
+      if (isScanning) return;
+      isScanning = true;
+
+      codeReader = new ZXing.BrowserMultiFormatReader();
+
+      try {
+        const videoInputDevices = await ZXing.BrowserMultiFormatReader.listVideoInputDevices();
+
+        if (videoInputDevices.length === 0) {
+          throw new Error('Nie znaleziono kamer.');
         }
-        
-        // Funkcja uruchamiająca kamerę
-        async function startCamera() {
-            try {
-                const constraints = {
-                    video: {
-                        facingMode: 'environment' // Używamy tylnej kamery
-                    }
-                };
-                
-                stream = await navigator.mediaDevices.getUserMedia(constraints);
-                const video = document.getElementById('camera-preview');
-                video.srcObject = stream;
-                video.play();
-                
-                // Rozpocznij rozpoznawanie kodów
-                scanForBarcodes();
-                
-            } catch (err) {
-                console.error('Błąd kamery:', err);
-                document.getElementById('barcode-result').textContent = 
-                    'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
+
+        const selectedDeviceId = videoInputDevices[0].deviceId;
+        const videoElement = document.getElementById('camera-preview');
+        modal.style.display = 'block';
+
+        await codeReader.decodeFromVideoDevice(
+          selectedDeviceId,
+          videoElement,
+          (result, err) => {
+            if (result) {
+              const code = result.text;
+              document.getElementById('barcode-result').textContent = `Zeskanowano: ${code}`;
+              document.getElementById(currentScannerTarget).value = code;
+
+              setTimeout(() => {
+                closeScanner();
+              }, 1000);
             }
-        }
-        
-        // Funkcja rozpoznająca kody kreskowe
-        function scanForBarcodes() {
-            const video = document.getElementById('camera-preview');
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            // Ustaw rozmiar canvas na rozmiar wideo
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            
-            // Funkcja analizująca obraz
-            function scanFrame() {
-                if (!stream || !video.videoWidth) {
-                    requestAnimationFrame(scanFrame);
-                    return;
-                }
-                
-                // Rysuj obraz wideo na canvas
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                // Pobierz dane obrazu
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                
-                // Prosta detekcja kodu kreskowego
-                const barcode = detectSimpleBarcode(imageData);
-                
-                if (barcode) {
-                    // Znaleziono kod
-                    document.getElementById('barcode-result').textContent = `Zeskanowano: ${barcode}`;
-                    document.getElementById(currentScannerTarget).value = barcode;
-                    
-                    // Zamknij skaner po 1 sekundzie
-                    setTimeout(() => {
-                        closeScanner();
-                    }, 1000);
-                    
-                    return;
-                }
-                
-                // Kontynuuj skanowanie
-                requestAnimationFrame(scanFrame);
+            if (err && !(err instanceof ZXing.NotFoundException)) {
+              console.error(err);
             }
-            
-            // Rozpocznij proces skanowania
-            scanFrame();
-        }
-        
-        // Prosta funkcja wykrywająca kod kreskowy (w uproszczeniu)
-        function detectSimpleBarcode(imageData) {
-            // W prawdziwej aplikacji użyjemy biblioteki jak QuaggaJS lub ZXing
-            // Tutaj dla demonstracji zwracamy losowy kod
-            
-            // Losowo decydujemy czy "znaleźć" kod (1 na 10 szans)
-            if (Math.random() < 0.1) {
-                // Generuj losowy kod
-                return Math.floor(1000000000000 + Math.random() * 9000000000000).toString();
-            }
-            
-            return null;
-        }
-        
-        // Funkcja zamykająca skaner
-        function closeScanner() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-            }
-            modal.style.display = 'none';
-        }
-        
-        // Funkcja generująca ciąg
-        function generujCiag() {
-            const katalog = document.getElementById('katalog').value;
-            const magazyn = document.getElementById('magazyn').value;
-            const skan = document.getElementById('skan').value;
-            const lokalizacja = document.getElementById('lokalizacja').value;
-            const ilosc = document.getElementById('ilosc').value;
-            
-            // Sprawdzenie czy wszystkie pola są wypełnione
-            if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
-                alert('Proszę wypełnić wszystkie pola!');
-                return;
-            }
-            
-            // Pobranie aktualnej daty w formacie RRRR-MM-DD
-            const dzisiaj = new Date();
-            const data = dzisiaj.toISOString().split('T')[0];
-            
-            // Generowanie ciągu tekstowego
-            const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
-            
-            // Wyświetlenie wyniku
-            document.getElementById('wynik').textContent = wynik;
-            document.getElementById('result').style.display = 'block';
-        }
-        
-        // Funkcja kopiująca do schowka
-        function kopiujDoSchowka() {
-            const wynik = document.getElementById('wynik').textContent;
-            navigator.clipboard.writeText(wynik)
-                .then(() => {
-                    alert('Skopiowano do schowka!');
-                })
-                .catch(err => {
-                    console.error('Błąd kopiowania: ', err);
-                    alert('Nie udało się skopiować do schowka.');
-                });
-        }
-        
-        // Event listeners
-        document.getElementById('open-camera-product').addEventListener('click', () => openScanner('skan'));
-        document.getElementById('open-camera-location').addEventListener('click', () => openScanner('lokalizacja'));
-        document.getElementById('stop-camera').addEventListener('click', closeScanner);
-        document.getElementById('generate-btn').addEventListener('click', generujCiag);
-        document.getElementById('copy-btn').addEventListener('click', kopiujDoSchowka);
-        document.querySelector('.close').addEventListener('click', closeScanner);
-        
-        // Skrót klawiszowy dla przycisku generowania (Enter)
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                generujCiag();
-            }
+          }
+        );
+      } catch (err) {
+        console.error('Błąd kamery:', err);
+        document.getElementById('barcode-result').textContent =
+          'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
+        isScanning = false;
+      }
+    }
+
+    function closeScanner() {
+      if (!isScanning) return;
+      isScanning = false;
+      if (codeReader) {
+        codeReader.reset();
+        codeReader = null;
+      }
+      const videoElement = document.getElementById('camera-preview');
+      videoElement.srcObject = null;
+      modal.style.display = 'none';
+      document.getElementById('barcode-result').textContent = '';
+    }
+
+    function generujCiag() {
+      const katalog = document.getElementById('katalog').value;
+      const magazyn = document.getElementById('magazyn').value;
+      const skan = document.getElementById('skan').value;
+      const lokalizacja = document.getElementById('lokalizacja').value;
+      const ilosc = document.getElementById('ilosc').value;
+
+      if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
+        alert('Proszę wypełnić wszystkie pola!');
+        return;
+      }
+
+      const dzisiaj = new Date();
+      const data = dzisiaj.toISOString().split('T')[0];
+
+      const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
+      document.getElementById('wynik').textContent = wynik;
+      document.getElementById('result').style.display = 'block';
+    }
+
+    function kopiujDoSchowka() {
+      const wynik = document.getElementById('wynik').textContent;
+      navigator.clipboard.writeText(wynik)
+        .then(() => alert('Skopiowano do schowka!'))
+        .catch(err => {
+          console.error('Błąd kopiowania: ', err);
+          alert('Nie udało się skopiować do schowka.');
         });
-    </script>
+    }
+
+    // Event listeners
+    document.getElementById('open-camera-product').addEventListener('click', () => startCamera('skan'));
+    document.getElementById('open-camera-location').addEventListener('click', () => startCamera('lokalizacja'));
+    document.getElementById('stop-camera').addEventListener('click', closeScanner);
+    document.getElementById('generate-btn').addEventListener('click', generujCiag);
+    document.getElementById('copy-btn').addEventListener('click', kopiujDoSchowka);
+    document.querySelector('.close')?.addEventListener('click', closeScanner);
+
+    // Obsługa Enter
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        generujCiag();
+      }
+    });
+  </script>
 </body>
 </html>
