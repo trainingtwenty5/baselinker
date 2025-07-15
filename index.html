@@ -4,6 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Usług Sieciowych</title>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBdhMIiqetOfDGP85ERxtgwn3AXR50pBcE",
+    authDomain: "base-468e0.firebaseapp.com",
+    projectId: "base-468e0",
+    storageBucket: "base-468e0.appspot.com",
+    messagingSenderId: "829161895559",
+    appId: "1:829161895559:web:d832541aac05b35847ea22"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let ostatniWygenerowanyCiag = '';
+
+  window.generujCiag = function () {
+    const katalog = document.getElementById('katalog').value;
+    const magazyn = document.getElementById('magazyn').value;
+    const skan = document.getElementById('skan').value;
+    const lokalizacja = document.getElementById('lokalizacja').value;
+    const ilosc = document.getElementById('ilosc').value;
+
+    if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
+      alert('Proszę wypełnić wszystkie pola!');
+      return;
+    }
+
+    const dzisiaj = new Date();
+    const data = dzisiaj.toISOString().split('T')[0];
+    const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
+
+    // Zapamiętaj ciąg
+    ostatniWygenerowanyCiag = wynik;
+
+    // Pokaż go użytkownikowi
+    document.getElementById('wynik').textContent = wynik;
+    document.getElementById('result').style.display = 'block';
+  }
+
+  window.zapiszWynik = async function () {
+    if (!ostatniWygenerowanyCiag) {
+      alert("Najpierw wygeneruj ciąg.");
+      return;
+    }
+
+    try {
+      const docRef = await addDoc(collection(db, "ciagi"), {
+        wartosc: ostatniWygenerowanyCiag,
+        timestamp: new Date()
+      });
+      console.log("Dokument zapisany z ID: ", docRef.id);
+      alert('Ciąg został zapisany w bazie danych!');
+    } catch (e) {
+      console.error("Błąd zapisu dokumentu: ", e);
+      alert('Nie udało się zapisać ciągu w bazie danych.');
+    }
+  }
+</script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 
@@ -343,25 +404,6 @@
 <body>
 
 
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyBdhMIiqetOfDGP85ERxtgwn3AXR50pBcE",
-    authDomain: "base-468e0.firebaseapp.com",
-    projectId: "base-468e0",
-    storageBucket: "base-468e0.firebasestorage.app",
-    messagingSenderId: "829161895559",
-    appId: "1:829161895559:web:d832541aac05b35847ea22"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
 
 
 
@@ -428,19 +470,28 @@
                 </div>
             </div>
             
-            <button class="btn" id="generate-btn">Generuj i zatwierdź ciąg</button>
-            
-            <div class="result-container" id="result">
-                <div class="result-header">
-                    <div class="result-title">Wygenerowany ciąg:</div>
-                    <button class="copy-btn" id="copy-btn">Kopiuj</button>
-                </div>
-                <div class="result-content" id="wynik"></div>
-            </div>
-        </div>
+			
+			
+<button class="btn" id="generate-btn" onclick="generujCiag()">Generuj ciąg</button>
+
+<div class="result-container" id="result" style="display: none;">
+    <div class="result-header">
+        <div class="result-title">Wygenerowany ciąg:</div>
+        <button class="copy-btn" id="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('wynik').textContent)">Kopiuj</button>
+    </div>
+    <div class="result-content" id="wynik"></div>
+    
+    <!-- Nowy przycisk zatwierdzenia -->
+    <button class="btn" id="save-btn" onclick="zapiszWynik()">Zatwierdź i zapisz do Firestore</button>
+</div>
+
+		
+		
+		
+		
         
         <footer>
-            <p>Generator usług sieciowych &copy; 2023 | Wygenerowano: <span class="highlight" id="current-date"></span></p>
+            <p>Skaner &copy; 2026 | Daniel B.: <span class="highlight" id="current-date"></span></p>
         </footer>
     </div>
 
