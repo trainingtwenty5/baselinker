@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Usług Sieciowych</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.19.1"></script>
+    <script src="https://unpkg.com/@zxing/library@0.18.6/umd/index.min.js"></script>
 
 	<style>
         * {
@@ -456,55 +455,50 @@
         }
         
      // Funkcja uruchamiająca kamerę
-   // Funkcja uruchamiająca kamerę
-        async function startCamera() {
-            if (isScanning) return;
-            
-            isScanning = true;
-            
-            // Utwórz czytnik kodów
-            codeReader = new ZXing.BrowserMultiFormatReader();
-            
-            try {
-                // Uzyskaj dostęp do kamery
-                const videoInputDevices = await ZXing.BrowserMultiFormatReader.listVideoInputDevices();
-                
-                // Wybierz pierwszą dostępną kamerę
-                const selectedDeviceId = videoInputDevices[0].deviceId;
-                
-                // Ustaw kontener kamery
-                const videoElement = document.getElementById('camera-preview');
-                
-                // Dekoduj kody z kamery
-                await codeReader.decodeFromVideoDevice(
-                    selectedDeviceId, 
-                    videoElement, 
-                    (result, err) => {
-                        if (result) {
-                            // Pobierz wynik skanowania
-                            const code = result.text;
-                            document.getElementById('barcode-result').textContent = `Zeskanowano: ${code}`;
-                            document.getElementById(currentScannerTarget).value = code;
-                            
-                            // Zamknij skaner po 1 sekundzie
-                            setTimeout(() => {
-                                closeScanner();
-                            }, 1000);
-                        }
-                        
-                        if (err && !(err instanceof ZXing.NotFoundException)) {
-                            console.error(err);
-                        }
-                    }
-                );
-                
-            } catch (err) {
-                console.error('Błąd kamery:', err);
-                document.getElementById('barcode-result').textContent = 
-                    'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
-                isScanning = false;
-            }
+let codeReader = null;
+let isScanning = false;
+
+async function startCamera() {
+    if (isScanning) return;
+    isScanning = true;
+
+    codeReader = new ZXing.BrowserMultiFormatReader();
+
+    try {
+        const videoInputDevices = await ZXing.BrowserMultiFormatReader.listVideoInputDevices();
+        if (videoInputDevices.length === 0) {
+            throw new Error('Brak kamer do użycia');
         }
+        const selectedDeviceId = videoInputDevices[0].deviceId;
+        const videoElement = document.getElementById('camera-preview');
+
+        await codeReader.decodeFromVideoDevice(
+            selectedDeviceId,
+            videoElement,
+            (result, err) => {
+                if (result) {
+                    const code = result.text;
+                    document.getElementById('barcode-result').textContent = `Zeskanowano: ${code}`;
+                    document.getElementById(currentScannerTarget).value = code;
+
+                    // Zatrzymaj skaner po 1 sekundzie
+                    setTimeout(() => {
+                        closeScanner();
+                    }, 1000);
+                }
+                if (err && !(err instanceof ZXing.NotFoundException)) {
+                    console.error(err);
+                }
+            }
+        );
+
+    } catch (err) {
+        console.error('Błąd kamery:', err);
+        document.getElementById('barcode-result').textContent =
+            'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
+        isScanning = false;
+    }
+}
 
         
         // Funkcja rozpoznająca kody kreskowe
