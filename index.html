@@ -455,28 +455,58 @@
         }
         
         // Funkcja uruchamiająca kamerę
-        async function startCamera() {
-            try {
-                const constraints = {
-                    video: {
-                        facingMode: 'environment' // Używamy tylnej kamery
-                    }
-                };
-                
-                stream = await navigator.mediaDevices.getUserMedia(constraints);
-                const video = document.getElementById('camera-preview');
-                video.srcObject = stream;
-                video.play();
-                
-                // Rozpocznij rozpoznawanie kodów
-                scanForBarcodes();
-                
-            } catch (err) {
-                console.error('Błąd kamery:', err);
-                document.getElementById('barcode-result').textContent = 
-                    'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
+function startCamera() {
+    Quagga.init({
+        inputStream: {
+            name: "Live",
+            type: "LiveStream",
+            target: document.querySelector('#camera-container'),
+            constraints: {
+                facingMode: "environment"
             }
+        },
+        decoder: {
+            readers: ["code_128_reader"]
         }
+    }, function (err) {
+        if (err) {
+            console.error(err);
+            document.getElementById('barcode-result').textContent =
+                '❌ Błąd: Nie udało się uruchomić skanera.';
+            return;
+        }
+        Quagga.start();
+    });
+
+    Quagga.onDetected(function (result) {
+        const rawCode = result.codeResult.code;
+
+        if (!rawCode) return;
+
+        // Automatyczne formatowanie, np. z NPK01P2 -> NP-K01-P2
+        let formatted = rawCode;
+
+        // Jeśli kod ma 8 znaków i wygląda jak NPK01P2
+        const autoFormatPattern = /^[A-Z]{2}K\d{2}P\d$/;
+        if (autoFormatPattern.test(rawCode)) {
+            formatted = rawCode.replace(/^([A-Z]{2})(K\d{2})(P\d)$/, '$1-$2-$3');
+        }
+
+        // Dodatkowa walidacja końcowego formatu
+        const finalPattern = /^[A-Z]{2}-K\d{2}-P\d$/;
+        if (finalPattern.test(formatted)) {
+            document.getElementById('barcode-result').textContent = `✅ Zeskanowano: ${formatted}`;
+            document.getElementById(currentScannerTarget).value = formatted;
+
+            setTimeout(() => {
+                Quagga.stop();
+                closeScanner();
+            }, 1000);
+        } else {
+            document.getElementById('barcode-result').textContent = `❌ Nieprawidłowy kod: ${rawCode}`;
+        }
+    });
+}
         
         // Funkcja rozpoznająca kody kreskowe
         function scanForBarcodes() {
