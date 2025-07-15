@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Usług Sieciowych</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<script src="https://unpkg.com/ @zxing/library@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css ">
+    <style>
+        /* Stylowanie CSS zostało usunięte na prośbę użytkownika */
+    </style>
+</head>
     <style>
         * {
             box-sizing: border-box;
@@ -338,224 +341,208 @@
             }
         }
     </style>
-</head>
 
-
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Generator Usług Sieciowych</title>
-  <script src="https://unpkg.com/ @zxing/library@latest"></script>
-</head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Generator Usług Sieciowych</h1>
-      <div class="subtitle">Generuj ciągi znaków na podstawie wybranych parametrów</div>
-    </header>
-
-    <div class="content">
-      <div class="form-section">
-        <h2>Parametry usługi</h2>
-        <div class="input-group">
-          <div class="form-group">
-            <label for="katalog">Katalog:</label>
-            <select id="katalog">
-              <option value="">-- Wybierz pozycję --</option>
-              <option value="15312">Lizzard</option>
-              <option value="7313">Wystawione</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="magazyn">Magazyn:</label>
-            <select id="magazyn">
-              <option value="">-- Wybierz magazyn --</option>
-              <option value="8644">R</option>
-              <option value="22547">Osetno</option>
-            </select>
-          </div>
+    <div class="container">
+        <header>
+            <h1>Generator Usług Sieciowych</h1>
+            <div class="subtitle">Generuj ciągi znaków na podstawie wybranych parametrów</div>
+        </header>
+        <div class="content">
+            <div class="form-section">
+                <h2>Parametry usługi</h2>
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="katalog">Katalog:</label>
+                        <select id="katalog">
+                            <option value="">-- Wybierz pozycję --</option>
+                            <option value="15312">Lizzard</option>
+                            <option value="7313">Wystawione</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="magazyn">Magazyn:</label>
+                        <select id="magazyn">
+                            <option value="">-- Wybierz magazyn --</option>
+                            <option value="8644">R</option>
+                            <option value="22547">Osetno</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-section">
+                <h2>Skanowanie i ilość</h2>
+                <div class="form-group">
+                    <label for="skan">Skanuj kod produktu:</label>
+                    <div class="scan-section">
+                        <input type="text" id="skan" class="scan-input" placeholder="Zeskanuj kod lub wpisz ręcznie">
+                        <button class="camera-btn" id="open-camera-product">
+                            <i class="fas fa-camera"></i> Skanuj
+                        </button>
+                    </div>
+                    <div class="info-text">Możesz zeskanować kod za pomocą telefonu</div>
+                </div>
+                <div class="form-group">
+                    <label for="lokalizacja">Skanuj lokalizację:</label>
+                    <div class="scan-section">
+                        <input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację">
+                        <button class="camera-btn" id="open-camera-location">
+                            <i class="fas fa-camera"></i> Skanuj
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ilosc">Ilość sztuk:</label>
+                    <input type="number" id="ilosc" min="1" value="1">
+                </div>
+            </div>
+            <button class="btn" id="generate-btn">Generuj i zatwierdź ciąg</button>
+            <div class="result-container" id="result">
+                <div class="result-header">
+                    <div class="result-title">Wygenerowany ciąg:</div>
+                    <button class="copy-btn" id="copy-btn">Kopiuj</button>
+                </div>
+                <div class="result-content" id="wynik"></div>
+            </div>
         </div>
-      </div>
-
-      <div class="form-section">
-        <h2>Skanowanie i ilość</h2>
-        <div class="form-group">
-          <label for="skan">Skanuj kod produktu:</label>
-          <div class="scan-section">
-            <input type="text" id="skan" class="scan-input" placeholder="Zeskanuj kod lub wpisz ręcznie"/>
-            <button class="camera-btn" id="open-camera-product">
-              <i class="fas fa-camera"></i> Skanuj
-            </button>
-          </div>
-          <div class="info-text">Możesz zeskanować kod za pomocą telefonu</div>
-        </div>
-
-        <div class="form-group">
-          <label for="lokalizacja">Skanuj lokalizację:</label>
-          <div class="scan-section">
-            <input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację"/>
-            <button class="camera-btn" id="open-camera-location">
-              <i class="fas fa-camera"></i> Skanuj
-            </button>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="ilosc">Ilość sztuk:</label>
-          <input type="number" id="ilosc" min="1" value="1"/>
-        </div>
-      </div>
-
-      <button class="btn" id="generate-btn">Generuj i zatwierdź ciąg</button>
-
-      <div class="result-container" id="result">
-        <div class="result-header">
-          <div class="result-title">Wygenerowany ciąg:</div>
-          <button class="copy-btn" id="copy-btn">Kopiuj</button>
-        </div>
-        <div class="result-content" id="wynik"></div>
-      </div>
+        <footer>
+            <p>Generator usług sieciowych &copy; 2023 | Wygenerowano: <span class="highlight" id="current-date"></span></p>
+        </footer>
     </div>
 
-    <footer>
-      <p>Generator usług sieciowych &copy; 2023 | Wygenerowano: <span class="highlight" id="current-date"></span></p>
-    </footer>
-  </div>
-
-  <!-- Modal do skanowania -->
-  <div id="scanner-modal" class="modal">
-    <span class="close">&times;</span>
-    <div class="modal-content">
-      <h2 style="color: white;">Skaner kodów kreskowych</h2>
-      <div id="camera-container">
-        <video id="camera-preview" width="300" height="200" style="border:1px solid black"></video>
-        <div id="scanner-guide">
-          <div class="scanner-text">Umieść kod w ramce</div>
+    <!-- Modal do skanowania -->
+    <div id="scanner-modal" class="modal">
+        <span class="close">&times;</span>
+        <div class="modal-content">
+            <h2 style="color: white;">Skaner kodów kreskowych</h2>
+            <div id="camera-container">
+                <video id="camera-preview" width="300" height="200" style="border:1px solid black"></video>
+                <div id="scanner-guide">
+                    <div class="scanner-text">Umieść kod w ramce</div>
+                </div>
+            </div>
+            <div id="barcode-result"></div>
+            <button class="btn" id="stop-camera" style="background: linear-gradient(to right, #e74c3c, #c0392b);">
+                <i class="fas fa-times-circle"></i> Zamknij skaner
+            </button>
         </div>
-      </div>
-      <div id="barcode-result"></div>
-      <button class="btn" id="stop-camera" style="background: linear-gradient(to right, #e74c3c, #c0392b);">
-        <i class="fas fa-times-circle"></i> Zamknij skaner
-      </button>
     </div>
-  </div>
 
-  <!-- Skrypt dla ZXing -->
-  <script>
-    // Ustaw aktualną datę w stopce
-    const today = new Date();
-    document.getElementById('current-date').textContent = today.toLocaleDateString('pl-PL');
+    <!-- Skrypt dla ZXing -->
+    <script src="https://unpkg.com/ @zxing/library@latest"></script>
+    <script>
+        // Ustaw aktualną datę w stopce
+        const today = new Date();
+        document.getElementById('current-date').textContent = today.toLocaleDateString('pl-PL');
 
-    // Zmienne globalne
-    let isScanning = false;
-    let codeReader = null;
-    let currentScannerTarget = null;
-    const modal = document.getElementById('scanner-modal');
+        // Zmienne globalne
+        let isScanning = false;
+        let codeReader = null;
+        let currentScannerTarget = null;
+        const modal = document.getElementById('scanner-modal');
 
-    async function startCamera(targetId) {
-      currentScannerTarget = targetId;
+        async function startCamera(targetId) {
+            currentScannerTarget = targetId;
 
-      if (isScanning) return;
-      isScanning = true;
+            if (isScanning) return;
+            isScanning = true;
 
-      codeReader = new ZXing.BrowserMultiFormatReader();
+            codeReader = new ZXing.BrowserMultiFormatReader();
 
-      try {
-        const videoInputDevices = await ZXing.BrowserMultiFormatReader.listVideoInputDevices();
+            try {
+                const videoInputDevices = await ZXing.BrowserMultiFormatReader.listVideoInputDevices();
 
-        if (videoInputDevices.length === 0) {
-          throw new Error('Nie znaleziono kamer.');
+                if (videoInputDevices.length === 0) {
+                    throw new Error('Nie znaleziono kamer.');
+                }
+
+                const selectedDeviceId = videoInputDevices[0].deviceId;
+                const videoElement = document.getElementById('camera-preview');
+                modal.style.display = 'block';
+
+                await codeReader.decodeFromVideoDevice(
+                    selectedDeviceId,
+                    videoElement,
+                    (result, err) => {
+                        if (result) {
+                            const code = result.text;
+                            document.getElementById('barcode-result').textContent = `Zeskanowano: ${code}`;
+                            document.getElementById(currentScannerTarget).value = code;
+
+                            setTimeout(() => {
+                                closeScanner();
+                            }, 1000);
+                        }
+                        if (err && !(err instanceof ZXing.NotFoundException)) {
+                            console.error(err);
+                        }
+                    }
+                );
+            } catch (err) {
+                console.error('Błąd kamery:', err);
+                document.getElementById('barcode-result').textContent =
+                    'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
+                isScanning = false;
+            }
         }
 
-        const selectedDeviceId = videoInputDevices[0].deviceId;
-        const videoElement = document.getElementById('camera-preview');
-        modal.style.display = 'block';
-
-        await codeReader.decodeFromVideoDevice(
-          selectedDeviceId,
-          videoElement,
-          (result, err) => {
-            if (result) {
-              const code = result.text;
-              document.getElementById('barcode-result').textContent = `Zeskanowano: ${code}`;
-              document.getElementById(currentScannerTarget).value = code;
-
-              setTimeout(() => {
-                closeScanner();
-              }, 1000);
+        function closeScanner() {
+            if (!isScanning) return;
+            isScanning = false;
+            if (codeReader) {
+                codeReader.reset();
+                codeReader = null;
             }
-            if (err && !(err instanceof ZXing.NotFoundException)) {
-              console.error(err);
+            const videoElement = document.getElementById('camera-preview');
+            videoElement.srcObject = null;
+            modal.style.display = 'none';
+            document.getElementById('barcode-result').textContent = '';
+        }
+
+        function generujCiag() {
+            const katalog = document.getElementById('katalog').value;
+            const magazyn = document.getElementById('magazyn').value;
+            const skan = document.getElementById('skan').value;
+            const lokalizacja = document.getElementById('lokalizacja').value;
+            const ilosc = document.getElementById('ilosc').value;
+
+            if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
+                alert('Proszę wypełnić wszystkie pola!');
+                return;
             }
-          }
-        );
-      } catch (err) {
-        console.error('Błąd kamery:', err);
-        document.getElementById('barcode-result').textContent =
-          'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
-        isScanning = false;
-      }
-    }
 
-    function closeScanner() {
-      if (!isScanning) return;
-      isScanning = false;
-      if (codeReader) {
-        codeReader.reset();
-        codeReader = null;
-      }
-      const videoElement = document.getElementById('camera-preview');
-      videoElement.srcObject = null;
-      modal.style.display = 'none';
-      document.getElementById('barcode-result').textContent = '';
-    }
+            const dzisiaj = new Date();
+            const data = dzisiaj.toISOString().split('T')[0];
 
-    function generujCiag() {
-      const katalog = document.getElementById('katalog').value;
-      const magazyn = document.getElementById('magazyn').value;
-      const skan = document.getElementById('skan').value;
-      const lokalizacja = document.getElementById('lokalizacja').value;
-      const ilosc = document.getElementById('ilosc').value;
+            const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
+            document.getElementById('wynik').textContent = wynik;
+            document.getElementById('result').style.display = 'block';
+        }
 
-      if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
-        alert('Proszę wypełnić wszystkie pola!');
-        return;
-      }
+        function kopiujDoSchowka() {
+            const wynik = document.getElementById('wynik').textContent;
+            navigator.clipboard.writeText(wynik)
+                .then(() => alert('Skopiowano do schowka!'))
+                .catch(err => {
+                    console.error('Błąd kopiowania: ', err);
+                    alert('Nie udało się skopiować do schowka.');
+                });
+        }
 
-      const dzisiaj = new Date();
-      const data = dzisiaj.toISOString().split('T')[0];
+        // Event listeners
+        document.getElementById('open-camera-product').addEventListener('click', () => startCamera('skan'));
+        document.getElementById('open-camera-location').addEventListener('click', () => startCamera('lokalizacja'));
+        document.getElementById('stop-camera').addEventListener('click', closeScanner);
+        document.getElementById('generate-btn').addEventListener('click', generujCiag);
+        document.getElementById('copy-btn').addEventListener('click', kopiujDoSchowka);
+        document.querySelector('.close')?.addEventListener('click', closeScanner);
 
-      const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
-      document.getElementById('wynik').textContent = wynik;
-      document.getElementById('result').style.display = 'block';
-    }
-
-    function kopiujDoSchowka() {
-      const wynik = document.getElementById('wynik').textContent;
-      navigator.clipboard.writeText(wynik)
-        .then(() => alert('Skopiowano do schowka!'))
-        .catch(err => {
-          console.error('Błąd kopiowania: ', err);
-          alert('Nie udało się skopiować do schowka.');
+        // Obsługa Enter
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                generujCiag();
+            }
         });
-    }
-
-    // Event listeners
-    document.getElementById('open-camera-product').addEventListener('click', () => startCamera('skan'));
-    document.getElementById('open-camera-location').addEventListener('click', () => startCamera('lokalizacja'));
-    document.getElementById('stop-camera').addEventListener('click', closeScanner);
-    document.getElementById('generate-btn').addEventListener('click', generujCiag);
-    document.getElementById('copy-btn').addEventListener('click', kopiujDoSchowka);
-    document.querySelector('.close')?.addEventListener('click', closeScanner);
-
-    // Obsługa Enter
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        generujCiag();
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
