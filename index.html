@@ -455,51 +455,28 @@
         }
         
         // Funkcja uruchamiająca kamerę
-function startCamera() {
-    Quagga.init({
-        inputStream: {
-            name: "Live",
-            type: "LiveStream",
-            target: document.querySelector('#camera-container'),
-            constraints: {
-                facingMode: "environment" // tylna kamera na telefonie
+        async function startCamera() {
+            try {
+                const constraints = {
+                    video: {
+                        facingMode: 'environment' // Używamy tylnej kamery
+                    }
+                };
+                
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                const video = document.getElementById('camera-preview');
+                video.srcObject = stream;
+                video.play();
+                
+                // Rozpocznij rozpoznawanie kodów
+                scanForBarcodes();
+                
+            } catch (err) {
+                console.error('Błąd kamery:', err);
+                document.getElementById('barcode-result').textContent = 
+                    'Błąd: Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia.';
             }
-        },
-        decoder: {
-            readers: ["code_128_reader"] // tylko Code 128, bo obsługuje znaki jak "-"
         }
-    }, function(err) {
-        if (err) {
-            console.error(err);
-            document.getElementById('barcode-result').textContent =
-                '❌ Błąd: Nie udało się uruchomić skanera.';
-            return;
-        }
-        Quagga.start();
-    });
-
-    Quagga.onDetected(function(result) {
-        const kod = result.codeResult.code;
-
-        if (!kod) return;
-
-        // Sprawdzenie, czy kod pasuje do formatu NP-K01-P2
-        const wzorzec = /^[A-Z]{2}-K\d{2}-P\d$/;
-        if (wzorzec.test(kod)) {
-            document.getElementById('barcode-result').textContent = `✅ Zeskanowano: ${kod}`;
-            document.getElementById(currentScannerTarget).value = kod;
-
-            // Zatrzymanie skanera po 1 sekundzie
-            setTimeout(() => {
-                Quagga.stop();
-                closeScanner();
-            }, 1000);
-        } else {
-            document.getElementById('barcode-result').textContent = `❌ Zły format: ${kod}`;
-        }
-    });
-}
-
         
         // Funkcja rozpoznająca kody kreskowe
         function scanForBarcodes() {
