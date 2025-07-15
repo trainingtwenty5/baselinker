@@ -719,62 +719,7 @@ function startCamera() {
 	
 	
 	
-	
-<script>
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBdhMIiqetOfDGP85ERxtgwn3AXR50pBcE",
-  authDomain: "base-468e0.firebaseapp.com",
-  projectId: "base-468e0",
-  storageBucket: "base-468e0.firebasestorage.app",
-  messagingSenderId: "829161895559",
-  appId: "1:829161895559:web:d832541aac05b35847ea22"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-async function zapiszDoFirestore(ciag) {
-  try {
-    const docRef = await addDoc(collection(db, "ciagi"), {
-      wartosc: ciag,
-      timestamp: new Date()
-    });
-    console.log("Dokument zapisany z ID: ", docRef.id);
-    alert('Ciąg został zapisany w bazie danych!');
-  } catch (e) {
-    console.error("Błąd zapisu dokumentu: ", e);
-    alert('Nie udało się zapisać ciągu w bazie danych.');
-  }
-}
-
-function generujCiag() {
-  const katalog = document.getElementById('katalog').value;
-  const magazyn = document.getElementById('magazyn').value;
-  const skan = document.getElementById('skan').value;
-  const lokalizacja = document.getElementById('lokalizacja').value;
-  const ilosc = document.getElementById('ilosc').value;
-
-  if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
-    alert('Proszę wypełnić wszystkie pola!');
-    return;
-  }
-
-  const dzisiaj = new Date();
-  const data = dzisiaj.toISOString().split('T')[0];
-  const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
-
-  document.getElementById('wynik').textContent = wynik;
-  document.getElementById('result').style.display = 'block';
-
-  // Zapis do Firestore
-  zapiszDoFirestore(wynik);
-}
-
-	}
-</script>
 	
 	
 	
