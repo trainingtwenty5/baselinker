@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Usług Sieciowych</title>
+    <title>Skaner26</title>
 	
 	
 	<!-- Google tag (gtag.js) -->
@@ -589,34 +589,31 @@ function startCamera() {
 
 
 Quagga.onDetected(function(result) {
-    if (!result || !result.codeResult || !result.codeResult.code) {
-        return; // Bezpieczne wyjście, brak poprawnego kodu
-    }
+	if (!result || !result.codeResult || !result.codeResult.code) return;
 
-    let kod = result.codeResult.code;
+	let kod = result.codeResult.code;
+	const szerokosc = Math.abs(result.box[1][0] - result.box[0][0]);
 
-    // Jeśli skanujemy produkt – przepuszczaj tylko kody zaczynające się od 761
-    if (currentScannerTarget === 'produkt') {
-        if (!kod.startsWith('761')) {
-            console.log("Zignorowano kod produktu (nie 761):", kod);
-            return;
-        }
-    }
+	// Obsługa lokalizacji
+	if (currentScannerTarget === 'lokalizacja') {
+		if (lokalizacjeMap.hasOwnProperty(kod)) {
+			kod = lokalizacjeMap[kod];
+		}
+	} else if (currentScannerTarget === 'produkt') {
+		// Wymuś prefiks 761 i odfiltrowanie zbyt wąskich kodów
+		if (!kod.startsWith('761') || szerokosc < 50) { // dopasuj próg szerokości wg własnych testów
+			console.log('Odrzucono kod:', kod, 'Szerokość:', szerokosc);
+			return; // ignoruj ten odczyt
+		}
+	}
 
-    // Jeśli skanujemy lokalizację – mapuj jeśli występuje w lokalizacjeMap
-    if (currentScannerTarget === 'lokalizacja' && lokalizacjeMap.hasOwnProperty(kod)) {
-        kod = lokalizacjeMap[kod];
-    }
+	document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
+	document.getElementById(currentScannerTarget).value = kod;
 
-    // Wyświetl wynik
-    document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
-    document.getElementById(currentScannerTarget).value = kod;
-
-    // Zatrzymaj skaner po krótkim czasie
-    setTimeout(() => {
-        Quagga.stop();
-        closeScanner();
-    }, 1000);
+	setTimeout(() => {
+		Quagga.stop();
+		closeScanner();
+	}, 1000);
 });
 
 
