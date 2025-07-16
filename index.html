@@ -561,41 +561,46 @@ console.log("Debug date:", new Date());
         
         // Funkcja uruchamiająca kamerę
 function startCamera() {
+    const constraints = {
+        facingMode: "environment",
+        width: { ideal: 1280 },  // Wymuszenie wyższej rozdzielczości
+        height: { ideal: 720 },
+        frameRate: { ideal: 30 }
+    };
+
     Quagga.init({
         inputStream: {
             name: "Live",
             type: "LiveStream",
             target: document.querySelector('#camera-container'),
-            constraints: {
-                facingMode: "environment",
-                width: { ideal: 1280 },
-                height: { ideal: 720 },
-                frameRate: { ideal: 30 }
-            },
-            area: { // Cały obszar obrazu dla lepszego wykrywania
+            constraints: constraints,
+            area: {
                 top: "0%",
                 right: "0%",
                 left: "0%",
-                bottom: "0%"
+                bottom: currentScannerTarget === 'skan' ? "60%" : "0%" // Tylko dla produktów ogranicz obszar
             }
         },
         decoder: {
             readers: ["ean_reader", "code_128_reader"],
-            multiple: false // Szybsze wykrywanie pojedynczego kodu
+            debug: {
+                drawBoundingBox: true,
+                showFrequency: true,
+                drawScanline: true,
+                showPattern: true
+            }
         },
         locate: true,
-        numOfWorkers: 2,
-        frequency: 10 // Wyższa częstotliwość skanowania
+        numOfWorkers: 4  // Więcej wątków dla lepszej wydajności
     }, function(err) {
         if (err) {
             console.error(err);
-            document.getElementById('barcode-result').textContent = 
-                'Błąd: Nie udało się uruchomić skanera.';
+            alert('Błąd kamery: ' + err.message);
             return;
         }
         Quagga.start();
     });
-}
+	
 	
 	
 
@@ -614,16 +619,22 @@ Quagga.onDetected(function(result) {
     let kod = result.codeResult.code;
     const box = result.box;
     
-    // Dla produktów - sprawdź prefix
+    // Dla produktów - sprawdź pozycję i prefix
     if (currentScannerTarget === 'skan') {
+        // Oblicz pozycję środka kodu
+        const middleY = (box[0][1] + box[1][1] + box[2][1] + box[3][1]) / 4;
+        
+        // Ignoruj jeśli kod jest w dolnej części
+        if (middleY > 0.4 * Quagga.canvas.dom.image.height) {
+            console.log('Ignoruję kod z dolnej części:', kod);
+            return;
+        }
+        
         // Wymagaj kodu zaczynającego się od 761
         if (!kod.startsWith('761')) {
             console.log('Ignoruję nieprawidłowy kod produktu:', kod);
             return;
         }
-        
-        // Usuń wszystkie znaki niebędące cyframi (opcjonalne)
-        kod = kod.replace(/\D/g, '');
     }
     
     // Dla lokalizacji - sprawdź mapowanie
@@ -646,10 +657,12 @@ Quagga.onDetected(function(result) {
         Quagga.stop();
         closeScanner();
         skanowanieZakonczone = false;
-    }, 100); // Skrócony czas zamknięcia do 100ms
+        
+        // Usuń nakładkę po zamknięciu
+        const overlay = document.getElementById('camera-overlay');
+        if (overlay) overlay.remove();
+    }, 500);
 });
-
-
 
 
 
