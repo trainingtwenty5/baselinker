@@ -495,10 +495,10 @@ object-fit: contain;
 						<div class="scan-section">
 							<input type="text" id="skan" class="scan-input" placeholder="Zeskanuj kod lub wpisz ręcznie">
 							<button class="camera-btn" id="open-camera-product">
-								<i class="fas fa-camera"></i> Skanuj
+								<i class="fas fa-camera"></i> Odczyt skanera
 							</button>
 							<button class="keyboard-btn" onclick="document.getElementById('skan').focus()">
-								<i class="fas fa-keyboard"></i>
+								<i class="fas fa-keyboard"></i> Klawiatura
 							</button>
 						</div>
 						<div class="info-text">Możesz zeskanować kod za pomocą telefonu</div>
@@ -509,10 +509,10 @@ object-fit: contain;
 						<div class="scan-section">
 							<input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację">
 							<button class="camera-btn" id="open-camera-location">
-								<i class="fas fa-camera"></i> Skanuj
+								<i class="fas fa-camera"></i> Odczyt skanera
 							</button>
 							<button class="keyboard-btn" onclick="document.getElementById('lokalizacja').focus()">
-								<i class="fas fa-keyboard"></i>
+								<i class="fas fa-keyboard"></i> Klawiatura
 							</button>
 						</div>
 					</div>
@@ -605,16 +605,22 @@ function startCamera() {
             target: document.querySelector('#camera-container'),
             constraints: {
                 facingMode: "environment",
-                zoom: currentScannerTarget === 'skan' ? 3 : 1 // Zoom tylko dla produktów
+                zoom: currentScannerTarget === 'skan' ? 5 : 1, // Zwiększony zoom do 5x dla produktów
+                focusMode: "continuous",
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
             }
         },
         decoder: {
-            readers: ["ean_reader", "code_128_reader"]
+            readers: ["ean_reader", "code_128_reader", "ean_8_reader", "upc_reader", "upc_e_reader"],
+            multiple: false
         },
         locator: {
-            patchSize: currentScannerTarget === 'skan' ? 'large' : 'medium', // Większy obszar dla produktów
+            patchSize: currentScannerTarget === 'skan' ? 'x-large' : 'medium',
             halfSample: true
-        }
+        },
+        numOfWorkers: 4,
+        frequency: 10
     };
 
     Quagga.init(config, function(err) {
