@@ -394,7 +394,7 @@ window.generujCiag = function () {
         
         .scanner-text {
             position: absolute;
-            bottom: -60px;
+            bottom: -65px;
             left: 0;
             width: 100%;
             text-align: center;
@@ -665,8 +665,9 @@ window.generujCiag = function () {
     <div id="scanner-modal" class="modal">
         
         <div class="modal-content">
+		<span id="stop-camera" class="close" id="close-scanner">&times;</span>
             <h2 style="color: white;">Skaner kodów </h2>
-			<span id="stop-camera" class="close" id="close-scanner">&times;</span>
+			
             
             <div class="scanner-controls">
                 <div class="size-control">
@@ -687,7 +688,7 @@ window.generujCiag = function () {
                 <div class="loading">Ładowanie kamery...</div>
                 <video id="camera-preview" playsinline></video>
                 <div id="scanner-guide">
-                    <div class="scanner-text">Skalibruj okno <BR> przyciskami szer. i wys. <BR> umieść kod w ramce</div>
+                    <div class="scanner-text">Skalibruj okno <BR> Użyj szer. i wys. <BR> umieść kod w ramce</div>
 
                 </div>
             </div>
