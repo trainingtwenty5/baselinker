@@ -2,9 +2,8 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Skaner26</title>
-	
 	
 	<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-X64VMTGXBE"></script>
@@ -12,13 +11,8 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-X64VMTGXBE');
 </script>
-	
-	
-	
-	
 	
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
@@ -86,6 +80,7 @@ window.generujCiag = function () {
 </script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
         * {
@@ -93,6 +88,7 @@ window.generujCiag = function () {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -114,29 +110,29 @@ window.generujCiag = function () {
         header {
             background: linear-gradient(to right, #2c3e50, #4a6491);
             color: white;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 10px;
             letter-spacing: 1px;
         }
         
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1rem;
             opacity: 0.9;
         }
         
         .content {
-            padding: 30px;
+            padding: 20px;
         }
         
         .form-section {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             background: #f9f9f9;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
             border-left: 5px solid #3498db;
             box-shadow: 0 3px 10px rgba(0,0,0,0.05);
@@ -144,29 +140,32 @@ window.generujCiag = function () {
         
         h2 {
             color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #3498db;
+            font-size: 1.3rem;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: bold;
             color: #2c3e50;
+            font-size: 0.95rem;
         }
         
         select, input {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: 2px solid #ddd;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             transition: all 0.3s;
+            background-color: white;
         }
         
         select:focus, input:focus {
@@ -177,7 +176,7 @@ window.generujCiag = function () {
         
         .input-group {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
         
         .input-group > div {
@@ -188,15 +187,15 @@ window.generujCiag = function () {
             background: linear-gradient(to right, #3498db, #2980b9);
             color: white;
             border: none;
-            padding: 16px 30px;
-            font-size: 18px;
+            padding: 14px 25px;
+            font-size: 16px;
             font-weight: bold;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             display: block;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 8px;
             letter-spacing: 1px;
         }
         
@@ -211,8 +210,8 @@ window.generujCiag = function () {
         }
         
         .result-container {
-            margin-top: 30px;
-            padding: 25px;
+            margin-top: 25px;
+            padding: 20px;
             background: #e8f4fc;
             border-radius: 10px;
             border-left: 5px solid #3498db;
@@ -223,33 +222,35 @@ window.generujCiag = function () {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .result-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: #2c3e50;
         }
         
         .result-content {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             word-break: break-all;
-            padding: 15px;
+            padding: 12px;
             background: white;
             border-radius: 8px;
             font-family: monospace;
             border: 1px solid #3498db;
+            margin-bottom: 15px;
         }
         
         .copy-btn {
             background: #27ae60;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 15px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             transition: background 0.3s;
+            font-size: 0.9rem;
         }
         
         .copy-btn:hover {
@@ -258,8 +259,8 @@ window.generujCiag = function () {
         
         .scan-section {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 15px;
         }
         
         .scan-input {
@@ -272,14 +273,15 @@ window.generujCiag = function () {
             color: white;
             border: none;
             border-radius: 8px;
-            padding: 14px;
+            padding: 12px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 0.9rem;
         }
         
         .camera-btn:hover {
@@ -287,18 +289,18 @@ window.generujCiag = function () {
         }
         
         .info-text {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #7f8c8d;
             margin-top: 5px;
         }
         
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             color: #7f8c8d;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             border-top: 1px solid #eee;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         .highlight {
@@ -317,14 +319,15 @@ window.generujCiag = function () {
             height: 100%;
             background-color: rgba(0, 0, 0, 0.9);
             overflow: auto;
+            touch-action: none;
         }
         
         .modal-content {
             position: relative;
             background-color: #222;
-            margin: 5% auto;
-            padding: 20px;
-            width: 95%;
+            margin: 2% auto;
+            padding: 15px;
+            width: 98%;
             max-width: 700px;
             border-radius: 10px;
             text-align: center;
@@ -333,9 +336,9 @@ window.generujCiag = function () {
         .close {
             color: white;
             position: absolute;
-            top: 15px;
-            right: 25px;
-            font-size: 35px;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
             font-weight: bold;
             cursor: pointer;
             z-index: 10;
@@ -347,24 +350,28 @@ window.generujCiag = function () {
         
         #camera-container {
             width: 100%;
-            height: 400px;
+            height: 60vh;
+            min-height: 300px;
+            max-height: 500px;
             background-color: #111;
-            margin: 20px 0;
+            margin: 15px 0;
             position: relative;
             border-radius: 8px;
             overflow: hidden;
         }
         
         #camera-preview {
-object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         #barcode-result {
             color: white;
-            font-size: 1.2rem;
-            margin: 20px 0;
-            min-height: 30px;
-            padding: 10px;
+            font-size: 1.1rem;
+            margin: 15px 0;
+            min-height: 25px;
+            padding: 8px;
             background: rgba(255,255,255,0.1);
             border-radius: 8px;
         }
@@ -374,8 +381,10 @@ object-fit: contain;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 90%;
-            height: 200px;
+            width: 80%;
+            height: 30%;
+            max-height: 200px;
+            min-height: 100px;
             border: 3px solid #3498db;
             border-radius: 8px;
             z-index: 5;
@@ -385,18 +394,20 @@ object-fit: contain;
         
         .scanner-text {
             position: absolute;
-            bottom: -40px;
+            bottom: -35px;
             left: 0;
             width: 100%;
             text-align: center;
             color: white;
             font-weight: bold;
+            font-size: 0.9rem;
         }
         
+        /* Lepsze dostosowanie do małych ekranów */
         @media (max-width: 600px) {
             .input-group {
                 flex-direction: column;
-                gap: 15px;
+                gap: 12px;
             }
             
             .scan-section {
@@ -404,32 +415,84 @@ object-fit: contain;
             }
             
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .form-section {
+                padding: 12px;
             }
             
             #camera-container {
-                height: 300px;
+                height: 50vh;
             }
             
             .modal-content {
-                width: 95%;
-                margin: 10% auto;
+                width: 98%;
+                margin: 5% auto;
+                padding: 10px;
+            }
+        }
+        
+        /* Poprawki dla bardzo małych ekranów */
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 10px;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .btn, .camera-btn {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            #scanner-guide {
+                width: 90%;
+                height: 25%;
+            }
+        }
+        
+        /* Animacja ładowania */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.2rem;
+            z-index: 10;
+        }
+        
+        /* Poprawki dla iOS */
+        @supports (-webkit-touch-callout: none) {
+            select, input {
+                font-size: 16px; /* Zapobiega powiększaniu na iOS */
+            }
+            
+            .camera-btn, .btn {
+                padding: 12px;
             }
         }
     </style>
 </head>
 <body>
-
-
-
-
-
-
-
     <div class="container">
         <header>
             <h1>Skaner26</h1>
-            
         </header>
         
         <div class="content">
@@ -487,29 +550,21 @@ object-fit: contain;
                 </div>
             </div>
             
-			
-			
-<button class="btn" id="generate-btn" onclick="generujCiag()">Generuj</button>
+            <button class="btn" id="generate-btn" onclick="generujCiag()">Generuj</button>
 
-<div class="result-container" id="result" style="display: none;">
-    <div class="result-header">
-        <div class="result-title">Wygenerowany ciąg:</div>
-        <button class="copy-btn" id="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('wynik').textContent)">Kopiuj</button>
-    </div>
-    <div class="result-content" id="wynik"></div>
-    
-    <!-- Nowy przycisk zatwierdzenia -->
-    <button class="btn" id="save-btn" onclick="zapiszWynik()">Zapisz do Base</button>
-</div>
-
-		
-		
-		
-		
+            <div class="result-container" id="result" style="display: none;">
+                <div class="result-header">
+                    <div class="result-title">Wygenerowany ciąg:</div>
+                    <button class="copy-btn" id="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('wynik').textContent)">Kopiuj</button>
+                </div>
+                <div class="result-content" id="wynik"></div>
+                
+                <button class="btn" id="save-btn" onclick="zapiszWynik()">Zapisz do Base</button>
+            </div>
+        </div>
         
         <footer>
             <p>Skaner &copy; 2026 | Daniel B.: <span class="highlight" id="current-date"></span></p>
-		
         </footer>
     </div>
 
@@ -519,6 +574,7 @@ object-fit: contain;
         <div class="modal-content">
             <h2 style="color: white;">Skaner kodów kreskowych</h2>
             <div id="camera-container">
+                <div class="loading">Ładowanie kamery...</div>
                 <video id="camera-preview" playsinline></video>
                 <div id="scanner-guide">
                     <div class="scanner-text">Umieść kod w ramce</div>
@@ -531,25 +587,15 @@ object-fit: contain;
         </div>
     </div>
 
-
-
-
-
-
-<script>
-document.getElementById('debug-date').textContent = "Debug: " + new Date();
-console.log("Debug date:", new Date());
-</script>
-
     <script>
         // Ustaw aktualną datę w stopce
         const today = new Date();
         document.getElementById('current-date').textContent = today.toLocaleDateString('pl-PL');
         
         // Zmienne globalne
-        let stream = null;
         let currentScannerTarget = null;
         const modal = document.getElementById('scanner-modal');
+        let isScannerActive = false;
         
         // Funkcja otwierająca skaner
         function openScanner(targetId) {
@@ -560,200 +606,140 @@ console.log("Debug date:", new Date());
         }
         
         // Funkcja uruchamiająca kamerę
-function startCamera() {
-    Quagga.init({
-        inputStream: {
-            name: "Live",
-            type: "LiveStream",
-            target: document.querySelector('#camera-container'),
-            constraints: {
-                facingMode: "environment"
-            }
-        },
-        decoder: {
-            readers: ["ean_reader", "code_128_reader"] // dodaj inne typy jeśli potrzebne
+        function startCamera() {
+            const loadingElement = document.querySelector('.loading');
+            loadingElement.style.display = 'block';
+            
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector('#camera-container'),
+                    constraints: {
+                        width: { min: 640 },
+                        height: { min: 480 },
+                        aspectRatio: { min: 1, max: 2 },
+                        facingMode: "environment",
+                        focusMode: "continuous"
+                    },
+                    area: { // Definiujemy obszar skanowania (80% środka ekranu)
+                        top: "10%",
+                        right: "10%",
+                        left: "10%",
+                        bottom: "10%"
+                    }
+                },
+                decoder: {
+                    readers: ["ean_reader", "ean_8_reader", "code_128_reader", "code_39_reader", "code_39_vin_reader"],
+                    debug: {
+                        drawBoundingBox: true,
+                        showFrequency: true,
+                        drawScanline: true,
+                        showPattern: true
+                    }
+                },
+                locate: true,
+                frequency: 10 // Sprawdzaj częściej
+            }, function(err) {
+                loadingElement.style.display = 'none';
+                
+                if (err) {
+                    console.error(err);
+                    document.getElementById('barcode-result').textContent = 
+                        'Błąd: Nie udało się uruchomić skanera. Upewnij się, że udzieliłeś uprawnień do kamery.';
+                    return;
+                }
+                
+                Quagga.start();
+                isScannerActive = true;
+                
+                // Automatyczne zatrzymanie po 30 sekundach dla oszczędności baterii
+                setTimeout(() => {
+                    if (isScannerActive) {
+                        Quagga.stop();
+                        document.getElementById('barcode-result').textContent = 'Skaner został automatycznie wyłączony po 30 sekundach';
+                        isScannerActive = false;
+                    }
+                }, 30000);
+            });
         }
-    }, function(err) {
-        if (err) {
-            console.error(err);
-            document.getElementById('barcode-result').textContent = 
-                'Błąd: Nie udało się uruchomić skanera.';
-            return;
-        }
-        Quagga.start();
-    });
-}	
 	
 	const lokalizacjeMap = {'BLL_00637471': '#KONTENER', 'BLL_00642931': 'CL-K01-P0', 'BLL_00642932': 'CL-K01-P1', 'BLL_00642933': 'CL-K01-P2', 'BLL_00642934': 'CL-K01-P3', 'BLL_00642935': 'CL-K01-P4', 'BLL_00642936': 'CL-K01-P5', 'BLL_00642937': 'CL-K01-P6', 'BLL_00642938': 'CL-K02-P0', 'BLL_00642939': 'CL-K02-P1', 'BLL_00642940': 'CL-K02-P2', 'BLL_00642941': 'CL-K02-P3', 'BLL_00642942': 'CL-K02-P4', 'BLL_00642943': 'CL-K02-P5', 'BLL_00642944': 'CL-K02-P6', 'BLL_00642945': 'CL-K02-P7', 'BLL_00642946': 'CL-K03-P0', 'BLL_00642947': 'CL-K03-P1', 'BLL_00642948': 'CL-K03-P2', 'BLL_00642949': 'CL-K03-P3', 'BLL_00642950': 'CL-K03-P4', 'BLL_00642951': 'CL-K03-P5', 'BLL_00642952': 'CL-K03-P6', 'BLL_00642953': 'CL-K03-P7', 'BLL_00642954': 'CL-K04-P0', 'BLL_00642955': 'CL-K04-P1', 'BLL_00642956': 'CL-K04-P2', 'BLL_00642957': 'CL-K04-P3', 'BLL_00642958': 'CL-K04-P4', 'BLL_00642959': 'CL-K04-P5', 'BLL_00642960': 'CL-K04-P6', 'BLL_00642961': 'CP-K01-P0', 'BLL_00642962': 'CP-K01-P1', 'BLL_00642963': 'CP-K01-P2', 'BLL_00642964': 'CP-K01-P3', 'BLL_00642965': 'CP-K01-P4', 'BLL_00642966': 'CP-K01-P5', 'BLL_00642967': 'CP-K01-P6', 'BLL_00642968': 'CP-K02-P0', 'BLL_00642969': 'CP-K02-P1', 'BLL_00642970': 'CP-K02-P2', 'BLL_00642971': 'CP-K02-P3', 'BLL_00642972': 'CP-K02-P4', 'BLL_00642973': 'CP-K02-P5', 'BLL_00642974': 'CP-K02-P6', 'BLL_00642975': 'CP-K02-P7', 'BLL_00642976': 'CP-K03-P0', 'BLL_00642977': 'CP-K03-P1', 'BLL_00642978': 'CP-K03-P2', 'BLL_00642979': 'CP-K03-P3', 'BLL_00642980': 'CP-K03-P4', 'BLL_00642981': 'CP-K03-P5', 'BLL_00642982': 'CP-K03-P6', 'BLL_00642983': 'CP-K03-P7', 'BLL_00642984': 'CP-K04-P0', 'BLL_00642985': 'CP-K04-P1', 'BLL_00642986': 'CP-K04-P2', 'BLL_00642987': 'CP-K04-P3', 'BLL_00642988': 'CP-K04-P4', 'BLL_00642989': 'CP-K04-P5', 'BLL_00642990': 'CP-K04-P6', 'BLL_00645089': 'D', 'BLL_00642991': 'DL-K01-P0', 'BLL_00642992': 'DL-K01-P1', 'BLL_00642993': 'DL-K01-P2', 'BLL_00642994': 'DL-K01-P3', 'BLL_00642995': 'DL-K01-P4', 'BLL_00642996': 'DL-K01-P5', 'BLL_00642997': 'DL-K01-P6', 'BLL_00642998': 'DL-K01-P7', 'BLL_00642999': 'DL-K02-P0', 'BLL_00643000': 'DL-K02-P1', 'BLL_00643001': 'DL-K02-P2', 'BLL_00643002': 'DL-K02-P3', 'BLL_00643003': 'DL-K02-P4', 'BLL_00643004': 'DL-K02-P5', 'BLL_00643005': 'DL-K02-P6', 'BLL_00643006': 'DL-K02-P7', 'BLL_00643007': 'DL-K03-P0', 'BLL_00643008': 'DL-K03-P1', 'BLL_00643009': 'DL-K03-P2', 'BLL_00643010': 'DL-K03-P3', 'BLL_00643011': 'DL-K03-P4', 'BLL_00643012': 'DL-K03-P5', 'BLL_00643013': 'DL-K03-P6', 'BLL_00643014': 'DL-K04-P0', 'BLL_00643015': 'DL-K04-P1', 'BLL_00643016': 'DL-K04-P2', 'BLL_00643017': 'DL-K04-P3', 'BLL_00643018': 'DL-K04-P4', 'BLL_00643019': 'DL-K04-P5', 'BLL_00643020': 'DL-K04-P6', 'BLL_00643021': 'DP-K01-P0', 'BLL_00643022': 'DP-K01-P1', 'BLL_00643023': 'DP-K01-P2', 'BLL_00643024': 'DP-K01-P3', 'BLL_00643025': 'DP-K01-P4', 'BLL_00643026': 'DP-K01-P5', 'BLL_00643027': 'DP-K01-P6', 'BLL_00643028': 'DP-K01-P7', 'BLL_00643029': 'DP-K02-P0', 'BLL_00643030': 'DP-K02-P1', 'BLL_00643031': 'DP-K02-P2', 'BLL_00643032': 'DP-K02-P3', 'BLL_00643033': 'DP-K02-P4', 'BLL_00643034': 'DP-K02-P5', 'BLL_00643035': 'DP-K02-P6', 'BLL_00643036': 'DP-K02-P7', 'BLL_00643037': 'DP-K03-P0', 'BLL_00643038': 'DP-K03-P1', 'BLL_00643039': 'DP-K03-P2', 'BLL_00643040': 'DP-K03-P3', 'BLL_00643041': 'DP-K03-P4', 'BLL_00643042': 'DP-K03-P5', 'BLL_00643043': 'DP-K03-P6', 'BLL_00643044': 'DP-K04-P0', 'BLL_00643045': 'DP-K04-P1', 'BLL_00643046': 'DP-K04-P2', 'BLL_00643047': 'DP-K04-P3', 'BLL_00643048': 'DP-K04-P4', 'BLL_00643049': 'DP-K04-P5', 'BLL_00643050': 'DP-K04-P6', 'BLL_00643051': 'EL-K01-P0', 'BLL_00643052': 'EL-K01-P1', 'BLL_00643053': 'EL-K01-P2', 'BLL_00643054': 'EL-K01-P3', 'BLL_00643055': 'EL-K01-P4', 'BLL_00643056': 'EL-K01-P5', 'BLL_00643057': 'EL-K02-P0', 'BLL_00643058': 'EL-K02-P1', 'BLL_00643059': 'EL-K02-P2', 'BLL_00643060': 'EL-K02-P3', 'BLL_00643061': 'EL-K02-P4', 'BLL_00643062': 'EL-K02-P5', 'BLL_00643063': 'EL-K03-P0', 'BLL_00643064': 'EL-K03-P1', 'BLL_00643065': 'EL-K03-P2', 'BLL_00643066': 'EL-K03-P3', 'BLL_00643067': 'EL-K03-P4', 'BLL_00643068': 'EL-K03-P5', 'BLL_00643069': 'EL-K04-P0', 'BLL_00643070': 'EL-K04-P1', 'BLL_00643071': 'EL-K04-P2', 'BLL_00643072': 'EL-K04-P3', 'BLL_00643073': 'EL-K04-P4', 'BLL_00643074': 'EL-K04-P5', 'BLL_00643075': 'EP-K01-P0', 'BLL_00643076': 'EP-K01-P1', 'BLL_00643077': 'EP-K01-P2', 'BLL_00643078': 'EP-K01-P3', 'BLL_00643079': 'EP-K01-P4', 'BLL_00643080': 'EP-K01-P5', 'BLL_00643081': 'EP-K02-P0', 'BLL_00643082': 'EP-K02-P1', 'BLL_00643083': 'EP-K02-P2', 'BLL_00643084': 'EP-K02-P3', 'BLL_00643085': 'EP-K02-P4', 'BLL_00643086': 'EP-K02-P5', 'BLL_00643087': 'EP-K03-P0', 'BLL_00643088': 'EP-K03-P1', 'BLL_00643089': 'EP-K03-P2', 'BLL_00643090': 'EP-K03-P3', 'BLL_00643091': 'EP-K03-P4', 'BLL_00643092': 'EP-K03-P5', 'BLL_00643093': 'EP-K04-P0', 'BLL_00643094': 'EP-K04-P1', 'BLL_00643095': 'EP-K04-P2', 'BLL_00643096': 'EP-K04-P3', 'BLL_00643097': 'EP-K04-P4', 'BLL_00643098': 'EP-K04-P5', 'BLL_00638293': 'IL-K01-P0', 'BLL_00638294': 'IL-K01-P1', 'BLL_00638295': 'IL-K01-P2', 'BLL_00638296': 'IL-K01-P3', 'BLL_00638297': 'IL-K01-P4', 'BLL_00638298': 'IL-K01-P5', 'BLL_00638299': 'IL-K02-P0', 'BLL_00638300': 'IL-K02-P1', 'BLL_00638301': 'IL-K02-P2', 'BLL_00638302': 'IL-K02-P3', 'BLL_00638303': 'IL-K02-P4', 'BLL_00638304': 'IL-K02-P5', 'BLL_00638305': 'IL-K03-P0', 'BLL_00638306': 'IL-K03-P1', 'BLL_00638307': 'IL-K03-P2', 'BLL_00638308': 'IL-K03-P3', 'BLL_00638309': 'IL-K03-P4', 'BLL_00638310': 'IL-K03-P5', 'BLL_00638311': 'IL-K03-P6', 'BLL_00638312': 'IL-K04-P0', 'BLL_00638313': 'IL-K04-P1', 'BLL_00638314': 'IL-K04-P2', 'BLL_00638315': 'IL-K04-P3', 'BLL_00638316': 'IL-K04-P4', 'BLL_00638317': 'IL-K04-P5', 'BLL_00638318': 'IL-K04-P6', 'BLL_00638319': 'IP-K01-P0', 'BLL_00638320': 'IP-K01-P1', 'BLL_00638321': 'IP-K01-P2', 'BLL_00638322': 'IP-K01-P3', 'BLL_00638323': 'IP-K01-P4', 'BLL_00638324': 'IP-K01-P5', 'BLL_00638325': 'IP-K02-P0', 'BLL_00638326': 'IP-K02-P1', 'BLL_00638327': 'IP-K02-P2', 'BLL_00638328': 'IP-K02-P3', 'BLL_00638329': 'IP-K02-P4', 'BLL_00638330': 'IP-K02-P5', 'BLL_00638331': 'IP-K03-P0', 'BLL_00638332': 'IP-K03-P1', 'BLL_00638333': 'IP-K03-P2', 'BLL_00638334': 'IP-K03-P3', 'BLL_00638335': 'IP-K03-P4', 'BLL_00638336': 'IP-K03-P5', 'BLL_00638337': 'IP-K03-P6', 'BLL_00638338': 'IP-K04-P0', 'BLL_00638339': 'IP-K04-P1', 'BLL_00638340': 'IP-K04-P2', 'BLL_00638341': 'IP-K04-P3', 'BLL_00638342': 'IP-K04-P4', 'BLL_00638343': 'IP-K04-P5', 'BLL_00638344': 'IP-K04-P6', 'BLL_00653812': 'JL-K01-P0', 'BLL_00653813': 'JL-K01-P1', 'BLL_00653814': 'JL-K01-P2', 'BLL_00653815': 'JL-K01-P3', 'BLL_00653816': 'JL-K01-P4', 'BLL_00653817': 'JL-K01-P5', 'BLL_00653818': 'JL-K01-P6', 'BLL_00653819': 'JL-K02-P0', 'BLL_00653820': 'JL-K02-P1', 'BLL_00653821': 'JL-K02-P2', 'BLL_00653822': 'JL-K02-P3', 'BLL_00653823': 'JL-K02-P4', 'BLL_00653824': 'JL-K02-P5', 'BLL_00653825': 'JL-K02-P6', 'BLL_00653826': 'JL-K03-P0', 'BLL_00653827': 'JL-K03-P1', 'BLL_00653828': 'JL-K03-P2', 'BLL_00653829': 'JL-K03-P3', 'BLL_00653830': 'JL-K03-P4', 'BLL_00653831': 'JL-K03-P5', 'BLL_00653832': 'JL-K03-P6', 'BLL_00653833': 'JL-K04-P0', 'BLL_00653834': 'JL-K04-P1', 'BLL_00653835': 'JL-K04-P2', 'BLL_00653836': 'JL-K04-P3', 'BLL_00653837': 'JL-K04-P4', 'BLL_00653838': 'JL-K04-P5', 'BLL_00653839': 'JL-K04-P6', 'BLL_00653840': 'JP-K01-P0', 'BLL_00653841': 'JP-K01-P1', 'BLL_00653842': 'JP-K01-P2', 'BLL_00653843': 'JP-K01-P3', 'BLL_00653844': 'JP-K01-P4', 'BLL_00653845': 'JP-K01-P5', 'BLL_00653846': 'JP-K01-P6', 'BLL_00653847': 'JP-K02-P0', 'BLL_00653848': 'JP-K02-P1', 'BLL_00653849': 'JP-K02-P2', 'BLL_00653850': 'JP-K02-P3', 'BLL_00653851': 'JP-K02-P4', 'BLL_00653852': 'JP-K02-P5', 'BLL_00653853': 'JP-K02-P6', 'BLL_00653854': 'JP-K03-P0', 'BLL_00653855': 'JP-K03-P1', 'BLL_00653856': 'JP-K03-P2', 'BLL_00653857': 'JP-K03-P3', 'BLL_00653858': 'JP-K03-P4', 'BLL_00653859': 'JP-K03-P5', 'BLL_00653860': 'JP-K03-P6', 'BLL_00653861': 'JP-K04-P0', 'BLL_00653862': 'JP-K04-P1', 'BLL_00653863': 'JP-K04-P2', 'BLL_00653864': 'JP-K04-P3', 'BLL_00653865': 'JP-K04-P4', 'BLL_00653866': 'JP-K04-P5', 'BLL_00653867': 'JP-K04-P6', 'BLL_00638345': 'KL-K01-P0', 'BLL_00638346': 'KL-K01-P1', 'BLL_00638347': 'KL-K01-P2', 'BLL_00638348': 'KL-K01-P3', 'BLL_00638349': 'KL-K01-P4', 'BLL_00638350': 'KL-K01-P5', 'BLL_00638351': 'KL-K02-P0', 'BLL_00638352': 'KL-K02-P1', 'BLL_00638353': 'KL-K02-P2', 'BLL_00638354': 'KL-K02-P3', 'BLL_00638355': 'KL-K02-P4', 'BLL_00638356': 'KL-K02-P5', 'BLL_00638357': 'KL-K03-P0', 'BLL_00638358': 'KL-K03-P1', 'BLL_00638359': 'KL-K03-P2', 'BLL_00638360': 'KL-K03-P3', 'BLL_00638361': 'KL-K03-P4', 'BLL_00638362': 'KL-K03-P5', 'BLL_00638363': 'KL-K04-P0', 'BLL_00638364': 'KL-K04-P1', 'BLL_00638365': 'KL-K04-P2', 'BLL_00638366': 'KL-K04-P3', 'BLL_00638367': 'KL-K04-P4', 'BLL_00638368': 'KL-K04-P5', 'BLL_00638369': 'KP-K01-P0', 'BLL_00638370': 'KP-K01-P1', 'BLL_00638371': 'KP-K01-P2', 'BLL_00638372': 'KP-K01-P3', 'BLL_00638373': 'KP-K01-P4', 'BLL_00638374': 'KP-K01-P5', 'BLL_00638375': 'KP-K02-P0', 'BLL_00638376': 'KP-K02-P1', 'BLL_00638377': 'KP-K02-P2', 'BLL_00638378': 'KP-K02-P3', 'BLL_00638379': 'KP-K02-P4', 'BLL_00638380': 'KP-K02-P5', 'BLL_00638381': 'KP-K03-P0', 'BLL_00638382': 'KP-K03-P1', 'BLL_00638383': 'KP-K03-P2', 'BLL_00638384': 'KP-K03-P3', 'BLL_00638385': 'KP-K03-P4', 'BLL_00638386': 'KP-K03-P5', 'BLL_00638387': 'KP-K04-P0', 'BLL_00638388': 'KP-K04-P1', 'BLL_00638389': 'KP-K04-P2', 'BLL_00638390': 'KP-K04-P3', 'BLL_00638391': 'KP-K04-P4', 'BLL_00638392': 'KP-K04-P5', 'BLL_00653868': 'LL-K01-P0', 'BLL_00653869': 'LL-K01-P1', 'BLL_00653870': 'LL-K01-P2', 'BLL_00653871': 'LL-K01-P3', 'BLL_00653872': 'LL-K01-P4', 'BLL_00653873': 'LL-K01-P5', 'BLL_00653874': 'LL-K01-P6', 'BLL_00653875': 'LL-K02-P0', 'BLL_00653876': 'LL-K02-P1', 'BLL_00653877': 'LL-K02-P2', 'BLL_00653878': 'LL-K02-P3', 'BLL_00653879': 'LL-K02-P4', 'BLL_00653880': 'LL-K02-P5', 'BLL_00653881': 'LL-K02-P6', 'BLL_00653882': 'LL-K03-P0', 'BLL_00653883': 'LL-K03-P1', 'BLL_00653884': 'LL-K03-P2', 'BLL_00653885': 'LL-K03-P3', 'BLL_00653886': 'LL-K03-P4', 'BLL_00653887': 'LL-K03-P5', 'BLL_00653888': 'LL-K03-P6', 'BLL_00653889': 'LL-K04-P0', 'BLL_00653890': 'LL-K04-P1', 'BLL_00653891': 'LL-K04-P2', 'BLL_00653892': 'LL-K04-P3', 'BLL_00653893': 'LL-K04-P4', 'BLL_00653894': 'LL-K04-P5', 'BLL_00653895': 'LL-K04-P6', 'BLL_00653896': 'LP-K01-P0', 'BLL_00653897': 'LP-K01-P1', 'BLL_00653898': 'LP-K01-P2', 'BLL_00653899': 'LP-K01-P3', 'BLL_00653900': 'LP-K01-P4', 'BLL_00653901': 'LP-K01-P5', 'BLL_00653902': 'LP-K01-P6', 'BLL_00653903': 'LP-K02-P0', 'BLL_00653904': 'LP-K02-P1', 'BLL_00653905': 'LP-K02-P2', 'BLL_00653906': 'LP-K02-P3', 'BLL_00653907': 'LP-K02-P4', 'BLL_00653908': 'LP-K02-P5', 'BLL_00653909': 'LP-K02-P6', 'BLL_00653910': 'LP-K03-P0', 'BLL_00653911': 'LP-K03-P1', 'BLL_00653912': 'LP-K03-P2', 'BLL_00653913': 'LP-K03-P3', 'BLL_00653914': 'LP-K03-P4', 'BLL_00653915': 'LP-K03-P5', 'BLL_00653916': 'LP-K03-P6', 'BLL_00653917': 'LP-K04-P0', 'BLL_00653918': 'LP-K04-P1', 'BLL_00653919': 'LP-K04-P2', 'BLL_00653920': 'LP-K04-P3', 'BLL_00653921': 'LP-K04-P4', 'BLL_00653922': 'LP-K04-P5', 'BLL_00653923': 'LP-K04-P6', 'BLL_00638393': 'NL-K01-P0', 'BLL_00638394': 'NL-K01-P1', 'BLL_00638395': 'NL-K01-P2', 'BLL_00638396': 'NL-K01-P3', 'BLL_00638397': 'NL-K01-P4', 'BLL_00638398': 'NL-K01-P5', 'BLL_00638399': 'NL-K01-P6', 'BLL_00638400': 'NL-K02-P0', 'BLL_00638401': 'NL-K02-P1', 'BLL_00638402': 'NL-K02-P2', 'BLL_00638403': 'NL-K02-P3', 'BLL_00638404': 'NL-K02-P4', 'BLL_00638405': 'NL-K02-P5', 'BLL_00638406': 'NL-K02-P6', 'BLL_00638407': 'NL-K03-P0', 'BLL_00638408': 'NL-K03-P1', 'BLL_00638409': 'NL-K03-P2', 'BLL_00638410': 'NL-K03-P3', 'BLL_00638411': 'NL-K03-P4', 'BLL_00638412': 'NL-K03-P5', 'BLL_00638413': 'NL-K03-P6', 'BLL_00638414': 'NL-K04-P0', 'BLL_00638415': 'NL-K04-P1', 'BLL_00638416': 'NL-K04-P2', 'BLL_00638417': 'NL-K04-P3', 'BLL_00638418': 'NL-K04-P4', 'BLL_00638419': 'NL-K04-P5', 'BLL_00638420': 'NL-K04-P6', 'BLL_00638421': 'NP-K01-P0', 'BLL_00638422': 'NP-K01-P1', 'BLL_00638423': 'NP-K01-P2', 'BLL_00638424': 'NP-K01-P3', 'BLL_00638425': 'NP-K01-P4', 'BLL_00638426': 'NP-K01-P5', 'BLL_00638427': 'NP-K01-P6', 'BLL_00638428': 'NP-K02-P0', 'BLL_00638429': 'NP-K02-P1', 'BLL_00638430': 'NP-K02-P2', 'BLL_00638431': 'NP-K02-P3', 'BLL_00638432': 'NP-K02-P4', 'BLL_00638433': 'NP-K02-P5', 'BLL_00638434': 'NP-K02-P6', 'BLL_00638435': 'NP-K03-P0', 'BLL_00638436': 'NP-K03-P1', 'BLL_00638437': 'NP-K03-P2', 'BLL_00638438': 'NP-K03-P3', 'BLL_00638439': 'NP-K03-P4', 'BLL_00638440': 'NP-K03-P5', 'BLL_00638441': 'NP-K03-P6', 'BLL_00638442': 'NP-K04-P0', 'BLL_00638443': 'NP-K04-P1', 'BLL_00638444': 'NP-K04-P2', 'BLL_00638445': 'NP-K04-P3', 'BLL_00638446': 'NP-K04-P4', 'BLL_00638447': 'NP-K04-P5', 'BLL_00638448': 'NP-K04-P6', 'BLL_00638449': 'OL-K01-P0', 'BLL_00638450': 'OL-K01-P1', 'BLL_00638451': 'OL-K01-P2', 'BLL_00638452': 'OL-K01-P3', 'BLL_00638453': 'OL-K01-P4', 'BLL_00638454': 'OL-K01-P5', 'BLL_00638455': 'OL-K01-P6', 'BLL_00638456': 'OL-K02-P0', 'BLL_00638457': 'OL-K02-P1', 'BLL_00638458': 'OL-K02-P2', 'BLL_00638459': 'OL-K02-P3', 'BLL_00638460': 'OL-K02-P4', 'BLL_00638461': 'OL-K02-P5', 'BLL_00638462': 'OL-K02-P6', 'BLL_00638463': 'OL-K03-P0', 'BLL_00638464': 'OL-K03-P1', 'BLL_00638465': 'OL-K03-P2', 'BLL_00638466': 'OL-K03-P3', 'BLL_00638467': 'OL-K03-P4', 'BLL_00638468': 'OL-K03-P5', 'BLL_00638469': 'OL-K03-P6', 'BLL_00638470': 'OL-K04-P0', 'BLL_00638471': 'OL-K04-P1', 'BLL_00638472': 'OL-K04-P2', 'BLL_00638473': 'OL-K04-P3', 'BLL_00638474': 'OL-K04-P4', 'BLL_00638475': 'OL-K04-P5', 'BLL_00638476': 'OL-K04-P6', 'BLL_00638477': 'OP-K01-P0', 'BLL_00638478': 'OP-K01-P1', 'BLL_00638479': 'OP-K01-P2', 'BLL_00638480': 'OP-K01-P3', 'BLL_00638481': 'OP-K01-P4', 'BLL_00638482': 'OP-K01-P5', 'BLL_00638483': 'OP-K01-P6', 'BLL_00638484': 'OP-K02-P0', 'BLL_00638485': 'OP-K02-P1', 'BLL_00638486': 'OP-K02-P2', 'BLL_00638487': 'OP-K02-P3', 'BLL_00638488': 'OP-K02-P4', 'BLL_00638489': 'OP-K02-P5', 'BLL_00638490': 'OP-K02-P6', 'BLL_00638491': 'OP-K03-P0', 'BLL_00638492': 'OP-K03-P1', 'BLL_00638493': 'OP-K03-P2', 'BLL_00638494': 'OP-K03-P3', 'BLL_00638495': 'OP-K03-P4', 'BLL_00638496': 'OP-K03-P5', 'BLL_00638497': 'OP-K03-P6', 'BLL_00638498': 'OP-K04-P0', 'BLL_00638499': 'OP-K04-P1', 'BLL_00638500': 'OP-K04-P2', 'BLL_00638501': 'OP-K04-P3', 'BLL_00638502': 'OP-K04-P4', 'BLL_00638503': 'OP-K04-P5', 'BLL_00638504': 'OP-K04-P6', 'BLL_00638505': 'PL-K01-P0', 'BLL_00638506': 'PL-K01-P1', 'BLL_00638507': 'PL-K01-P2', 'BLL_00638508': 'PL-K01-P3', 'BLL_00638509': 'PL-K01-P4', 'BLL_00638510': 'PL-K01-P5', 'BLL_00638511': 'PL-K01-P6', 'BLL_00638512': 'PL-K02-P0', 'BLL_00638513': 'PL-K02-P1', 'BLL_00638514': 'PL-K02-P2', 'BLL_00638515': 'PL-K02-P3', 'BLL_00638516': 'PL-K02-P4', 'BLL_00638517': 'PL-K02-P5', 'BLL_00638518': 'PL-K02-P6', 'BLL_00638519': 'PL-K03-P0', 'BLL_00638520': 'PL-K03-P1', 'BLL_00638521': 'PL-K03-P2', 'BLL_00638522': 'PL-K03-P3', 'BLL_00638523': 'PL-K03-P4', 'BLL_00638524': 'PL-K03-P5', 'BLL_00638525': 'PL-K03-P6', 'BLL_00638526': 'PP-K01-P0', 'BLL_00638527': 'PP-K01-P1', 'BLL_00638528': 'PP-K01-P2', 'BLL_00638529': 'PP-K01-P3', 'BLL_00638530': 'PP-K01-P4', 'BLL_00638531': 'PP-K01-P5', 'BLL_00638532': 'PP-K01-P6', 'BLL_00638533': 'PP-K02-P0', 'BLL_00638534': 'PP-K02-P1', 'BLL_00638535': 'PP-K02-P2', 'BLL_00638536': 'PP-K02-P3', 'BLL_00638537': 'PP-K02-P4', 'BLL_00638538': 'PP-K02-P5', 'BLL_00638539': 'PP-K02-P6', 'BLL_00638540': 'PP-K03-P0', 'BLL_00638541': 'PP-K03-P1', 'BLL_00638542': 'PP-K03-P2', 'BLL_00638543': 'PP-K03-P3', 'BLL_00638544': 'PP-K03-P4', 'BLL_00638545': 'PP-K03-P5', 'BLL_00638546': 'PP-K03-P6'
 	};
 
-let skanowanieZakonczone = false;
+        let skanowanieZakonczone = false;
+        let lastScannedCode = '';
+        let lastScannedTime = 0;
 
-Quagga.onDetected(function(result) {
-    if (skanowanieZakonczone || !result || !result.codeResult || !result.codeResult.code) return;
-
-    let kod = result.codeResult.code;
-    const box = result.box;
-    
-    // Dla produktów - sprawdź pozycję i prefix
-    if (currentScannerTarget === 'skan') {
-        // Oblicz pozycję środka kodu
-        const middleY = (box[0][1] + box[1][1] + box[2][1] + box[3][1]) / 4;
-        
-        // Ignoruj jeśli kod jest w dolnej części
-        if (middleY > 0.4 * Quagga.canvas.dom.image.height) {
-            console.log('Ignoruję kod z dolnej części:', kod);
-            return;
-        }
-        
-        // Wymagaj kodu zaczynającego się od 761
-        if (!kod.startsWith('761')) {
-            console.log('Ignoruję nieprawidłowy kod produktu:', kod);
-            return;
-        }
-    }
-    
-    // Dla lokalizacji - sprawdź mapowanie
-    if (currentScannerTarget === 'lokalizacja') {
-        if (lokalizacjeMap.hasOwnProperty(kod)) {
-            kod = lokalizacjeMap[kod];
-        } else {
-            console.log('Kod lokalizacji nierozpoznany:', kod);
-            return;
-        }
-    }
-
-    // Zabezpieczenie przed wielokrotnym odczytem
-    skanowanieZakonczone = true;
-
-    document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
-    document.getElementById(currentScannerTarget).value = kod;
-
-    setTimeout(() => {
-        Quagga.stop();
-        closeScanner();
-        skanowanieZakonczone = false;
-        
-        // Usuń nakładkę po zamknięciu
-        const overlay = document.getElementById('camera-overlay');
-        if (overlay) overlay.remove();
-    }, 500);
-});
-
-        
-        // Funkcja rozpoznająca kody kreskowe
-        function scanForBarcodes() {
-            const video = document.getElementById('camera-preview');
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
+        Quagga.onDetected(function(result) {
+            if (!isScannerActive || skanowanieZakonczone || !result || !result.codeResult || !result.codeResult.code) return;
             
-            // Ustaw rozmiar canvas na rozmiar wideo
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            const now = Date.now();
+            const code = result.codeResult.code;
             
-            // Funkcja analizująca obraz
-            function scanFrame() {
-                if (!stream || !video.videoWidth) {
-                    requestAnimationFrame(scanFrame);
-                    return;
-                }
-                
-                // Rysuj obraz wideo na canvas
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                // Pobierz dane obrazu
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                
-                // Prosta detekcja kodu kreskowego
-                const barcode = detectSimpleBarcode(imageData);
-                
-                if (barcode) {
-                    // Znaleziono kod
-                    document.getElementById('barcode-result').textContent = `Zeskanowano: ${barcode}`;
-                    document.getElementById(currentScannerTarget).value = barcode;
-                    
-                    // Zamknij skaner po 1 sekundzie
-                    setTimeout(() => {
-                        closeScanner();
-                    }, 1000);
-                    
-                    return;
-                }
-                
-                // Kontynuuj skanowanie
-                requestAnimationFrame(scanFrame);
+            // Ignoruj ten sam kod w ciągu 1 sekundy
+            if (code === lastScannedCode && (now - lastScannedTime) < 1000) {
+                return;
             }
             
-            // Rozpocznij proces skanowania
-            scanFrame();
-        }
-        
-        // Prosta funkcja wykrywająca kod kreskowy (w uproszczeniu)
-        function detectSimpleBarcode(imageData) {
-            // W prawdziwej aplikacji użyjemy biblioteki jak QuaggaJS lub ZXing
-            // Tutaj dla demonstracji zwracamy losowy kod
+            lastScannedCode = code;
+            lastScannedTime = now;
             
-            // Losowo decydujemy czy "znaleźć" kod (1 na 10 szans)
-            if (Math.random() < 0.1) {
-                // Generuj losowy kod
-                return Math.floor(1000000000000 + Math.random() * 9000000000000).toString();
+            let kod = code;
+            const box = result.box;
+            
+            // Dla produktów - sprawdź pozycję i prefix
+            if (currentScannerTarget === 'skan') {
+                // Oblicz pozycję środka kodu
+                const middleY = (box[0][1] + box[1][1] + box[2][1] + box[3][1]) / 4;
+                
+                // Wymagaj kodu zaczynającego się od 761
+                if (!kod.startsWith('761')) {
+                    console.log('Ignoruję nieprawidłowy kod produktu:', kod);
+                    return;
+                }
             }
             
-            return null;
-        }
-        
+            // Dla lokalizacji - sprawdź mapowanie
+            if (currentScannerTarget === 'lokalizacja') {
+                if (lokalizacjeMap.hasOwnProperty(kod)) {
+                    kod = lokalizacjeMap[kod];
+                } else {
+                    console.log('Kod lokalizacji nierozpoznany:', kod);
+                    return;
+                }
+            }
+
+            // Zabezpieczenie przed wielokrotnym odczytem
+            skanowanieZakonczone = true;
+
+            document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
+            document.getElementById(currentScannerTarget).value = kod;
+
+            setTimeout(() => {
+                if (isScannerActive) {
+                    Quagga.stop();
+                    isScannerActive = false;
+                }
+                closeScanner();
+                skanowanieZakonczone = false;
+            }, 500);
+        });
+
         // Funkcja zamykająca skaner
         function closeScanner() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
+            if (isScannerActive) {
+                Quagga.stop();
+                isScannerActive = false;
             }
             modal.style.display = 'none';
-        }
-        
-        // Funkcja generująca ciąg
-window.generujCiag = function () {
-    const katalog = document.getElementById('katalog').value;
-    const magazyn = document.getElementById('magazyn').value;
-    const skan = document.getElementById('skan').value;
-    const lokalizacja = document.getElementById('lokalizacja').value;
-    const ilosc = document.getElementById('ilosc').value;
-
-    if (!katalog || !magazyn || !skan || !lokalizacja || !ilosc) {
-        alert('Proszę wypełnić wszystkie pola!');
-        return;
-    }
-
-    const dzisiaj = new Date();
-    const data = dzisiaj.getFullYear() + '-' + 
-                String(dzisiaj.getMonth() + 1).padStart(2, '0') + '-' + 
-                String(dzisiaj.getDate()).padStart(2, '0');
-    const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
-
-    ostatniWygenerowanyCiag = wynik;
-    document.getElementById('wynik').textContent = wynik;
-    document.getElementById('result').style.display = 'block';
-}
-
-// Ustaw aktualną godzinę w polu godzina
-document.addEventListener('DOMContentLoaded', function() {
-    const now = new Date();
-    const currentHour = now.getHours().toString().padStart(2, '0');
-    const currentMinute = now.getMinutes().toString().padStart(2, '0');
-    document.getElementById('godzina').value = `${currentHour}:${currentMinute}`;
-});
-        
-        // Funkcja kopiująca do schowka
-        function kopiujDoSchowka() {
-            const wynik = document.getElementById('wynik').textContent;
-            navigator.clipboard.writeText(wynik)
-                .then(() => {
-                    alert('Skopiowano do schowka!');
-                })
-                .catch(err => {
-                    console.error('Błąd kopiowania: ', err);
-                    alert('Nie udało się skopiować do schowka.');
-                });
+            
+            // Wyczyść strumień wideo
+            const video = document.getElementById('camera-preview');
+            if (video.srcObject) {
+                video.srcObject.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+            }
         }
         
         // Event listeners
@@ -770,13 +756,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 generujCiag();
             }
         });
-		
-		
-		
-		
-		
-		
+        
+        // Funkcja kopiująca do schowka
+        function kopiujDoSchowka() {
+            const wynik = document.getElementById('wynik').textContent;
+            navigator.clipboard.writeText(wynik)
+                .then(() => {
+                    alert('Skopiowano do schowka!');
+                })
+                .catch(err => {
+                    console.error('Błąd kopiowania: ', err);
+                    alert('Nie udało się skopiować do schowka.');
+                });
+        }
+        
+        // Obsługa zmiany orientacji ekranu
+        window.addEventListener('orientationchange', function() {
+            if (modal.style.display === 'block' && isScannerActive) {
+                Quagga.stop();
+                setTimeout(() => {
+                    startCamera();
+                }, 300);
+            }
+        });
     </script>
+</body>
+</html>
 	
 	
 	
