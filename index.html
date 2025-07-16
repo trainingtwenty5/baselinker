@@ -369,18 +369,19 @@ object-fit: contain;
             border-radius: 8px;
         }
         
-#scanner-guide {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 100px;
-    border: 3px solid rgba(52, 152, 219, 0.8);
-    z-index: 5;
-    pointer-events: none;
-    box-shadow: 0 0 0 100vmax rgba(0,0,0,0.7);
-}
+        #scanner-guide {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            height: 200px;
+            border: 3px solid #3498db;
+            border-radius: 8px;
+            z-index: 5;
+            pointer-events: none;
+            box-shadow: 0 0 0 10000px rgba(0,0,0,0.7);
+        }
         
         .scanner-text {
             position: absolute;
@@ -569,7 +570,7 @@ function startCamera() {
                 facingMode: "environment",
                 width: { ideal: 1280 },
                 height: { ideal: 720 },
-                aspectRatio: { ideal: 1.777 } // 16:9 - standardowy widok
+                frameRate: { ideal: 30 }
             },
             area: { // Cały obszar obrazu dla lepszego wykrywania
                 top: "0%",
