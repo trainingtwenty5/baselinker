@@ -689,7 +689,7 @@ window.generujCiag = function () {
 	
 	  <!-- Modal do skanowania kodu kreskowego -->
 <div id="scanner-modal" class="modal">
-        <span class="close" id="close-scanner">&times;</span>
+        <span class="close" id="stop-camera">&times;</span>
         <div class="modal-content">
             <h2 style="color: white;">Skaner kodów kreskowych</h2>
             
@@ -718,7 +718,7 @@ window.generujCiag = function () {
                 <div class="loading">Ładowanie kamery...</div>
                 <video id="camera-preview" playsinline></video>
                 <div id="scanner-guide">
-                    <div class="scanner-text">Umieść kod w ramce</div>
+                    <div class="scanner-text"> Umieść kod w ramce <br> Skalibruj okno (szer./wys./zoom)<br> Kod musi być dobrze oświetlony</div>
                 </div>
             </div>
             <div id="barcode-result"></div>
