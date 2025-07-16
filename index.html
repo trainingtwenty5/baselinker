@@ -603,35 +603,7 @@ function startCamera() {
 	
 	
 	
-	function adjustScannerSettings() {
-    const debugCanvas = document.getElementById('debug-canvas');
-    const ctx = debugCanvas.getContext('2d');
-    
-    Quagga.onProcessed(function(result) {
-        if (!result) return;
-        
-        // Debugowanie obrazu
-        ctx.drawImage(Quagga.canvas.dom.image, 0, 0);
-        
-        // Automatyczna regulacja ustawień
-        if (result.boxes) {
-            const box = result.boxes[0];
-            const sharpness = calculateSharpness(box);
-            
-            if (sharpness < 0.7) {
-                Quagga.stop();
-                setTimeout(() => {
-                    Quagga.init({...}, 500); // Ponowna inicjalizacja z nowymi ustawieniami
-                });
-            }
-        }
-    });
-}
-
-function calculateSharpness(box) {
-    // Implementacja analizy ostrości
-    return 0.9; // Przykładowa wartość
-}
+	
 	
 	
 	
