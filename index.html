@@ -561,23 +561,41 @@ console.log("Debug date:", new Date());
         
         // Funkcja uruchamiająca kamerę
 function startCamera() {
+    const constraints = {
+        facingMode: "environment",
+        width: { ideal: 1280 },  // Wymuszenie wyższej rozdzielczości
+        height: { ideal: 720 },
+        frameRate: { ideal: 30 }
+    };
+
     Quagga.init({
         inputStream: {
             name: "Live",
             type: "LiveStream",
             target: document.querySelector('#camera-container'),
-            constraints: {
-                facingMode: "environment"
+            constraints: constraints,
+            area: {
+                top: "0%",
+                right: "0%",
+                left: "0%",
+                bottom: currentScannerTarget === 'skan' ? "60%" : "0%" // Tylko dla produktów ogranicz obszar
             }
         },
         decoder: {
-            readers: ["ean_reader", "code_128_reader"] // dodaj inne typy jeśli potrzebne
-        }
+            readers: ["ean_reader", "code_128_reader"],
+            debug: {
+                drawBoundingBox: true,
+                showFrequency: true,
+                drawScanline: true,
+                showPattern: true
+            }
+        },
+        locate: true,
+        numOfWorkers: 4  // Więcej wątków dla lepszej wydajności
     }, function(err) {
         if (err) {
             console.error(err);
-            document.getElementById('barcode-result').textContent = 
-                'Błąd: Nie udało się uruchomić skanera.';
+            alert('Błąd kamery: ' + err.message);
             return;
         }
         Quagga.start();
