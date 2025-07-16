@@ -809,14 +809,14 @@ window.generujCiag = function () {
         }
         
         // Obsługa zmiany orientacji ekranu
-        window.addEventListener('orientationchange', function() {
-            if (modal.style.display === 'block' && isScannerActive) {
-                Quagga.stop();
-                setTimeout(() => {
-                    startCamera();
-                }, 300);
-            }
-        });
+        //window.addEventListener('orientationchange', function() {
+            //if (modal.style.display === 'block' && isScannerActive) {
+               // Quagga.stop();
+                //setTimeout(() => {
+                 //   startCamera();
+               // }, 300);
+            //}
+        //});
     </script>
 </body>
 </html>
