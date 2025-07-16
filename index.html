@@ -594,30 +594,27 @@ Quagga.onDetected(function(result) {
     if (skanowanieZakonczone || !result || !result.codeResult || !result.codeResult.code) return;
 
     let kod = result.codeResult.code;
-    const szerokosc = Math.abs(result.box[1][0] - result.box[0][0]);
-
-    // Podziel kod na linie i znajdź linię zaczynającą się od 761
-    const lines = kod.split('\n');
-    const gornyKod = lines.find(line => line.trim().startsWith('761'));
-
-    // Jeśli nie znaleziono kodu 761, przerwij skanowanie
-    if (!gornyKod) {
-        console.log('Nie znaleziono kodu zaczynającego się od 761:', kod);
-        return;
-    }
-
-    kod = gornyKod.trim(); // Użyj tylko górnego kodu 761...
-
-    // Filtr dla skanera produktów
-    if (currentScannerTarget === 'produkt') {
-        // (opcjonalnie) dodatkowy filtr np. szerokości
-        if (szerokosc < 50) {
-            console.log('Kod zbyt wąski:', kod, 'Szerokość:', szerokosc);
+    const box = result.box;
+    
+    // Dla produktów - sprawdź pozycję i prefix
+    if (currentScannerTarget === 'skan') {
+        // Oblicz pozycję środka kodu
+        const middleY = (box[0][1] + box[1][1] + box[2][1] + box[3][1]) / 4;
+        
+        // Ignoruj jeśli kod jest w dolnej części
+        if (middleY > 0.4 * Quagga.canvas.dom.image.height) {
+            console.log('Ignoruję kod z dolnej części:', kod);
+            return;
+        }
+        
+        // Wymagaj kodu zaczynającego się od 761
+        if (!kod.startsWith('761')) {
+            console.log('Ignoruję nieprawidłowy kod produktu:', kod);
             return;
         }
     }
-
-    // Filtr dla lokalizacji
+    
+    // Dla lokalizacji - sprawdź mapowanie
     if (currentScannerTarget === 'lokalizacja') {
         if (lokalizacjeMap.hasOwnProperty(kod)) {
             kod = lokalizacjeMap[kod];
@@ -637,7 +634,11 @@ Quagga.onDetected(function(result) {
         Quagga.stop();
         closeScanner();
         skanowanieZakonczone = false;
-    }, 1000);
+        
+        // Usuń nakładkę po zamknięciu
+        const overlay = document.getElementById('camera-overlay');
+        if (overlay) overlay.remove();
+    }, 500);
 });
 
 
