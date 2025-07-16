@@ -369,19 +369,18 @@ object-fit: contain;
             border-radius: 8px;
         }
         
-        #scanner-guide {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            height: 200px;
-            border: 3px solid #3498db;
-            border-radius: 8px;
-            z-index: 5;
-            pointer-events: none;
-            box-shadow: 0 0 0 10000px rgba(0,0,0,0.7);
-        }
+#scanner-guide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 100px;
+    border: 3px solid rgba(52, 152, 219, 0.8);
+    z-index: 5;
+    pointer-events: none;
+    box-shadow: 0 0 0 100vmax rgba(0,0,0,0.7);
+}
         
         .scanner-text {
             position: absolute;
@@ -561,57 +560,45 @@ console.log("Debug date:", new Date());
         
         // Funkcja uruchamiająca kamerę
 function startCamera() {
-    const constraints = {
-        facingMode: "environment",
-        width: { ideal: 1280 },  // Wymuszenie wyższej rozdzielczości
-        height: { ideal: 720 },
-        frameRate: { ideal: 30 }
-    };
-
     Quagga.init({
         inputStream: {
             name: "Live",
             type: "LiveStream",
             target: document.querySelector('#camera-container'),
-            constraints: constraints,
-            area: {
+            constraints: {
+                facingMode: "environment",
+                width: { ideal: 1280 },
+                height: { ideal: 720 },
+                frameRate: { ideal: 30 }
+            },
+            area: { // Cały obszar obrazu dla lepszego wykrywania
                 top: "0%",
                 right: "0%",
                 left: "0%",
-                bottom: currentScannerTarget === 'skan' ? "60%" : "0%" // Tylko dla produktów ogranicz obszar
+                bottom: "0%"
             }
         },
         decoder: {
             readers: ["ean_reader", "code_128_reader"],
-            debug: {
-                drawBoundingBox: true,
-                showFrequency: true,
-                drawScanline: true,
-                showPattern: true
-            }
+            multiple: false // Szybsze wykrywanie pojedynczego kodu
         },
         locate: true,
-        numOfWorkers: 4  // Więcej wątków dla lepszej wydajności
+        numOfWorkers: 2,
+        frequency: 10 // Wyższa częstotliwość skanowania
     }, function(err) {
         if (err) {
             console.error(err);
-            alert('Błąd kamery: ' + err.message);
+            document.getElementById('barcode-result').textContent = 
+                'Błąd: Nie udało się uruchomić skanera.';
             return;
         }
         Quagga.start();
     });
+}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
@@ -627,22 +614,16 @@ Quagga.onDetected(function(result) {
     let kod = result.codeResult.code;
     const box = result.box;
     
-    // Dla produktów - sprawdź pozycję i prefix
+    // Dla produktów - sprawdź prefix
     if (currentScannerTarget === 'skan') {
-        // Oblicz pozycję środka kodu
-        const middleY = (box[0][1] + box[1][1] + box[2][1] + box[3][1]) / 4;
-        
-        // Ignoruj jeśli kod jest w dolnej części
-        if (middleY > 0.4 * Quagga.canvas.dom.image.height) {
-            console.log('Ignoruję kod z dolnej części:', kod);
-            return;
-        }
-        
         // Wymagaj kodu zaczynającego się od 761
         if (!kod.startsWith('761')) {
             console.log('Ignoruję nieprawidłowy kod produktu:', kod);
             return;
         }
+        
+        // Usuń wszystkie znaki niebędące cyframi (opcjonalne)
+        kod = kod.replace(/\D/g, '');
     }
     
     // Dla lokalizacji - sprawdź mapowanie
@@ -665,16 +646,16 @@ Quagga.onDetected(function(result) {
         Quagga.stop();
         closeScanner();
         skanowanieZakonczone = false;
-        
-        // Usuń nakładkę po zamknięciu
-        const overlay = document.getElementById('camera-overlay');
-        if (overlay) overlay.remove();
-    }, 500);
+    }, 100); // Skrócony czas zamknięcia do 100ms
 });
 
 
 
 }
+
+
+
+
 
         
         // Funkcja rozpoznająca kody kreskowe
@@ -809,7 +790,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		
 		
 		
-		
+		window.addEventListener('orientationchange', function() {
+    if (modal.style.display === 'block') {
+        Quagga.stop();
+        setTimeout(startCamera, 300);
+    }
+});
 		
 		
     </script>
