@@ -517,21 +517,24 @@ window.generujCiag = function () {
 		
 	 
         
-        .scanner-controls {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-        }
+.scanner-controls {
+    display: flex;
+    flex-direction: column; /* Ustaw w kolumnie */
+    gap: 10px; /* Odstęp między wierszami */
+    margin: 10px 0;
+}
         
-        .size-control {
-            background: rgba(255,255,255,0.2);
-            padding: 8px;
-            border-radius: 5px;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+.size-control {
+    background: rgba(255,255,255,0.2);
+    padding: 8px;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Wyśrodkuj */
+    gap: 10px;
+    width: 100%; /* Pełna szerokość */
+}
         
         .size-btn {
             background: #3498db;
