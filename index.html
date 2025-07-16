@@ -588,22 +588,37 @@ function startCamera() {
 	};
 
 
-		Quagga.onDetected(function(result) {
-			if (!result || !result.codeResult || !result.codeResult.code) {
-				return; // brak prawidłowego wyniku
-			}
+Quagga.onDetected(function(result) {
+    if (!result || !result.codeResult || !result.codeResult.code) {
+        return; // Bezpieczne wyjście, brak poprawnego kodu
+    }
 
-			const code = result.codeResult.code;
+    let kod = result.codeResult.code;
 
-			// Sprawdź, czy kod zaczyna się od "761"
-			if (code.startsWith("761")) {
-				console.log("Zeskanowano kod produktu:", code);
-				handleDetectedProduct(code); // <- twoja funkcja obsługująca produkt
-			} else {
-				// Ignoruj inne kody, np. etykiety wysyłkowe itp.
-				console.log("Zignorowano kod (nie zaczyna się od 761):", code);
-			}
-		});
+    // Jeśli skanujemy produkt – przepuszczaj tylko kody zaczynające się od 761
+    if (currentScannerTarget === 'produkt') {
+        if (!kod.startsWith('761')) {
+            console.log("Zignorowano kod produktu (nie 761):", kod);
+            return;
+        }
+    }
+
+    // Jeśli skanujemy lokalizację – mapuj jeśli występuje w lokalizacjeMap
+    if (currentScannerTarget === 'lokalizacja' && lokalizacjeMap.hasOwnProperty(kod)) {
+        kod = lokalizacjeMap[kod];
+    }
+
+    // Wyświetl wynik
+    document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
+    document.getElementById(currentScannerTarget).value = kod;
+
+    // Zatrzymaj skaner po krótkim czasie
+    setTimeout(() => {
+        Quagga.stop();
+        closeScanner();
+    }, 1000);
+});
+
 
 }
 
