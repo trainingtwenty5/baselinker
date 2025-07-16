@@ -574,12 +574,7 @@ function startCamera() {
             type: "LiveStream",
             target: document.querySelector('#camera-container'),
             constraints: constraints,
-            area: {
-                top: "0%",
-                right: "0%",
-                left: "0%",
-                bottom: currentScannerTarget === 'skan' ? "60%" : "0%" // Tylko dla produktów ogranicz obszar
-            }
+  
         },
         decoder: {
             readers: ["ean_reader", "code_128_reader"],
