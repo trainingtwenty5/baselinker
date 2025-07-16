@@ -345,15 +345,18 @@ window.generujCiag = function () {
             color: #ccc;
         }
         
-        #camera-container {
-            width: 100%;
-            height: 400px;
-            background-color: #111;
-            margin: 20px 0;
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-        }
+#camera-container {
+    width: 100%;
+    height: 60vh;
+    position: relative;
+    overflow: hidden;
+}
+
+#interactive {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Zamiast 'contain' dla pełnego widoku */
+}
         
         #camera-preview {
 object-fit: contain;
@@ -369,19 +372,18 @@ object-fit: contain;
             border-radius: 8px;
         }
         
-        #scanner-guide {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            height: 200px;
-            border: 3px solid #3498db;
-            border-radius: 8px;
-            z-index: 5;
-            pointer-events: none;
-            box-shadow: 0 0 0 10000px rgba(0,0,0,0.7);
-        }
+#scanner-guide {
+    border: 2px solid #3498db;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 120px;
+    z-index: 5;
+    pointer-events: none;
+    box-shadow: 0 0 0 100vmax rgba(0,0,0,0.5);
+}
         
         .scanner-text {
             position: absolute;
@@ -561,40 +563,38 @@ console.log("Debug date:", new Date());
         
         // Funkcja uruchamiająca kamerę
 function startCamera() {
-    const constraints = {
-        facingMode: "environment",
-        width: { ideal: 1280 },  // Wymuszenie wyższej rozdzielczości
-        height: { ideal: 720 },
-        frameRate: { ideal: 30 }
-    };
-
     Quagga.init({
         inputStream: {
             name: "Live",
             type: "LiveStream",
             target: document.querySelector('#camera-container'),
-            constraints: constraints,
-  
-        },
-        decoder: {
-            readers: ["ean_reader", "code_128_reader"],
-            debug: {
-                drawBoundingBox: true,
-                showFrequency: true,
-                drawScanline: true,
-                showPattern: true
+            constraints: {
+                facingMode: "environment",
+                width: { min: 640, ideal: 1280, max: 1920 },
+                height: { min: 480, ideal: 720, max: 1080 },
+                aspectRatio: { ideal: 1.333 } // 4:3 - naturalny widok
+            },
+            area: { // Pełny widok bez przycinania
+                top: "0%",
+                right: "0%",
+                left: "0%",
+                bottom: "0%"
             }
         },
-        locate: true,
-        numOfWorkers: 4  // Więcej wątków dla lepszej wydajności
+        decoder: {
+            readers: ["ean_reader", "code_128_reader"]
+        },
+        locate: false, // Wyłącz automatyczne przybliżanie
+        numOfWorkers: 2
     }, function(err) {
         if (err) {
             console.error(err);
-            alert('Błąd kamery: ' + err.message);
+            alert('Problem z kamerą: ' + err.message);
             return;
         }
         Quagga.start();
     });
+}
 	
 	
 	
