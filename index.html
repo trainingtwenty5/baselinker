@@ -515,7 +515,34 @@ window.generujCiag = function () {
     margin-bottom: 20px;
 }	
 		
-		
+	 
+        
+        .scanner-controls {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        
+        .size-control {
+            background: rgba(255,255,255,0.2);
+            padding: 8px;
+            border-radius: 5px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .size-btn {
+            background: #3498db;
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+        }	
     </style>
 </head>
 <body>
@@ -608,11 +635,50 @@ window.generujCiag = function () {
         </footer>
     </div>
 
-    <!-- Modal do skanowania kodu kreskowego -->
+    <!-- Modal do skanowania kodu kreskowego
     <div id="scanner-modal" class="modal">
         <span class="close">&times;</span>
         <div class="modal-content">
             <h2 style="color: white;">Skaner kodów kreskowych</h2>
+            <div id="camera-container">
+                <div class="loading">Ładowanie kamery...</div>
+                <video id="camera-preview" playsinline></video>
+                <div id="scanner-guide">
+                    <div class="scanner-text">Umieść kod w ramce</div>
+                </div>
+            </div>
+            <div id="barcode-result"></div>
+            <button class="btn" id="stop-camera" style="background: linear-gradient(to right, #e74c3c, #c0392b);">
+                <i class="fas fa-times-circle"></i> Zamknij skaner
+            </button>
+        </div>
+    </div>-->
+	
+	
+	
+	
+	
+	  <!-- Modal do skanowania kodu kreskowego -->
+    <div id="scanner-modal" class="modal">
+        <span class="close" id="close-scanner">&times;</span>
+        <div class="modal-content">
+            <h2 style="color: white;">Skaner kodów kreskowych</h2>
+            
+            <div class="scanner-controls">
+                <div class="size-control">
+                    <span>Szerokość:</span>
+                    <button class="size-btn" id="decrease-width">-</button>
+                    <span id="width-value">80%</span>
+                    <button class="size-btn" id="increase-width">+</button>
+                </div>
+                <div class="size-control">
+                    <span>Wysokość:</span>
+                    <button class="size-btn" id="decrease-height">-</button>
+                    <span id="height-value">30%</span>
+                    <button class="size-btn" id="increase-height">+</button>
+                </div>
+            </div>
+            
             <div id="camera-container">
                 <div class="loading">Ładowanie kamery...</div>
                 <video id="camera-preview" playsinline></video>
@@ -645,7 +711,54 @@ window.generujCiag = function () {
             startCamera();
         }
         
+		
+		 // Dodaj ten kod do istniejącego skryptu
+        
+        // Ustawienia domyślne
+        const defaultScannerSize = {
+            width: 80,  // % szerokości ekranu
+            height: 30  // % wysokości ekranu
+        };
+		
         // Funkcja uruchamiająca kamerę
+        let scannerSize = JSON.parse(localStorage.getItem('scannerSize')) || defaultScannerSize;
+        
+        // Funkcja aktualizująca rozmiar okna skanującego
+        function updateScannerSize() {
+            const guide = document.getElementById('scanner-guide');
+            if (guide) {
+                guide.style.width = `${scannerSize.width}%`;
+                guide.style.height = `${scannerSize.height}%`;
+                
+                // Aktualizuj widoczne wartości
+                document.getElementById('width-value').textContent = `${scannerSize.width}%`;
+                document.getElementById('height-value').textContent = `${scannerSize.height}%`;
+                
+                // Zapisz ustawienia
+                localStorage.setItem('scannerSize', JSON.stringify(scannerSize));
+            }
+        }
+        
+        // Funkcje zmiany rozmiaru
+        function changeSize(dimension, change) {
+            // Ogranicz zakres 20-90%
+            scannerSize[dimension] = Math.max(20, Math.min(90, scannerSize[dimension] + change));
+            updateScannerSize();
+        }
+        
+        // Inicjalizacja kontrolek po załadowaniu DOM
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dodaj event listeners dla przycisków
+            document.getElementById('increase-width').addEventListener('click', () => changeSize('width', 5));
+            document.getElementById('decrease-width').addEventListener('click', () => changeSize('width', -5));
+            document.getElementById('increase-height').addEventListener('click', () => changeSize('height', 5));
+            document.getElementById('decrease-height').addEventListener('click', () => changeSize('height', -5));
+            
+            // Ustaw początkowy rozmiar
+            updateScannerSize();
+        });
+        
+        // Modyfikacja funkcji startCamera() - dodaj obszar skanowania z zapisanymi wartościami
         function startCamera() {
             const loadingElement = document.querySelector('.loading');
             loadingElement.style.display = 'block';
@@ -662,48 +775,24 @@ window.generujCiag = function () {
                         facingMode: "environment",
                         focusMode: "continuous"
                     },
-                    area: { // Definiujemy obszar skanowania (80% środka ekranu)
-                        top: "10%",
-                        right: "10%",
-                        left: "10%",
-                        bottom: "10%"
+                    area: {
+                        top: `${(100 - scannerSize.height) / 2}%`,
+                        right: `${(100 - scannerSize.width) / 2}%`,
+                        left: `${(100 - scannerSize.width) / 2}%`,
+                        bottom: `${(100 - scannerSize.height) / 2}%`
                     }
                 },
-                decoder: {
-                    readers: ["ean_reader", "ean_8_reader", "code_128_reader", "code_39_reader", "code_39_vin_reader"],
-                    debug: {
-                        drawBoundingBox: true,
-                        showFrequency: true,
-                        drawScanline: true,
-                        showPattern: true
-                    }
-                },
-                locate: true,
-				numOfWorkers: 4,
-                frequency: 10 // Sprawdzaj częściej
-				
-
+                // ... (reszta konfiguracji Quagga pozostaje bez zmian)
             }, function(err) {
                 loadingElement.style.display = 'none';
-                
                 if (err) {
                     console.error(err);
                     document.getElementById('barcode-result').textContent = 
                         'Błąd: Nie udało się uruchomić skanera. Upewnij się, że udzieliłeś uprawnień do kamery.';
                     return;
                 }
-                
                 Quagga.start();
                 isScannerActive = true;
-                
-                // Automatyczne zatrzymanie po 30 sekundach dla oszczędności baterii
-                //setTimeout(() => {
-                    //if (isScannerActive) {
-                        //Quagga.stop();
-                        //document.getElementById('barcode-result').textContent = 'Skaner został automatycznie wyłączony po 30 sekundach';
-                        //isScannerActive = false;
-                    //}
-                //}, 30000);
             });
         }
 	
