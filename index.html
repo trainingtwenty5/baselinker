@@ -588,50 +588,58 @@ function startCamera() {
 	};
 
 
+
+
 let skanowanieZakonczone = false;
 
 Quagga.onDetected(function(result) {
-	if (skanowanieZakonczone || !result || !result.codeResult || !result.codeResult.code) return;
+    if (skanowanieZakonczone || !result || !result.codeResult || !result.codeResult.code) return;
 
-	let kod = result.codeResult.code;
-	const szerokosc = Math.abs(result.box[1][0] - result.box[0][0]);
+    let kod = result.codeResult.code;
+    const szerokosc = Math.abs(result.box[1][0] - result.box[0][0]);
 
-	// Filtr dla skanera produktów
-	if (currentScannerTarget === 'produkt') {
-		// Zatrzymaj skanowanie, jeśli kod NIE zaczyna się od 761
-		if (!kod.startsWith('761')) {
-			console.log('Ignoruję kod (nie 761):', kod);
-			return;
-		}
-		
-		// (opcjonalnie) dodatkowy filtr np. szerokości
-		if (szerokosc < 50) {
-			console.log('Kod zbyt wąski:', kod, 'Szerokość:', szerokosc);
-			return;
-		}
-	}
+    // Podziel kod na linie i weź tylko pierwszą linię (górny kod)
+    const lines = kod.split('\n');
+    if (lines.length > 0) {
+        kod = lines[0].trim(); // Weź pierwszą linię i usuń białe znaki
+    }
 
-	// Filtr dla lokalizacji
-	if (currentScannerTarget === 'lokalizacja') {
-		if (lokalizacjeMap.hasOwnProperty(kod)) {
-			kod = lokalizacjeMap[kod];
-		} else {
-			console.log('Kod lokalizacji nierozpoznany:', kod);
-			return;
-		}
-	}
+    // Filtr dla skanera produktów
+    if (currentScannerTarget === 'produkt') {
+        // Zatrzymaj skanowanie, jeśli kod NIE zaczyna się od 761
+        if (!kod.startsWith('761')) {
+            console.log('Ignoruję kod (nie 761):', kod);
+            return;
+        }
+        
+        // (opcjonalnie) dodatkowy filtr np. szerokości
+        if (szerokosc < 50) {
+            console.log('Kod zbyt wąski:', kod, 'Szerokość:', szerokosc);
+            return;
+        }
+    }
 
-	// Zabezpieczenie przed wielokrotnym odczytem
-	skanowanieZakonczone = true;
+    // Filtr dla lokalizacji
+    if (currentScannerTarget === 'lokalizacja') {
+        if (lokalizacjeMap.hasOwnProperty(kod)) {
+            kod = lokalizacjeMap[kod];
+        } else {
+            console.log('Kod lokalizacji nierozpoznany:', kod);
+            return;
+        }
+    }
 
-	document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
-	document.getElementById(currentScannerTarget).value = kod;
+    // Zabezpieczenie przed wielokrotnym odczytem
+    skanowanieZakonczone = true;
 
-	setTimeout(() => {
-		Quagga.stop();
-		closeScanner();
-		skanowanieZakonczone = false;
-	}, 1000);
+    document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
+    document.getElementById(currentScannerTarget).value = kod;
+
+    setTimeout(() => {
+        Quagga.stop();
+        closeScanner();
+        skanowanieZakonczone = false;
+    }, 1000);
 });
 
 
