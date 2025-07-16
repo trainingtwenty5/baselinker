@@ -589,20 +589,22 @@ function startCamera() {
 
 
 		Quagga.onDetected(function(result) {
-			let kod = result.codeResult.code;
-
-			if (currentScannerTarget === 'lokalizacja' && lokalizacjeMap.hasOwnProperty(kod)) {
-				kod = lokalizacjeMap[kod];
+			if (!result || !result.codeResult || !result.codeResult.code) {
+				return; // brak prawidłowego wyniku
 			}
 
-			document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
-			document.getElementById(currentScannerTarget).value = kod;
+			const code = result.codeResult.code;
 
-			setTimeout(() => {
-				Quagga.stop();
-				closeScanner();
-			}, 1000);
+			// Sprawdź, czy kod zaczyna się od "761"
+			if (code.startsWith("761")) {
+				console.log("Zeskanowano kod produktu:", code);
+				handleDetectedProduct(code); // <- twoja funkcja obsługująca produkt
+			} else {
+				// Ignoruj inne kody, np. etykiety wysyłkowe itp.
+				console.log("Zignorowano kod (nie zaczyna się od 761):", code);
+			}
 		});
+
 }
 
         
