@@ -434,7 +434,7 @@ object-fit: contain;
         
         <div class="content">
             <div class="form-section">
-                <h2>Parametry usługi</h2>
+                <h2>Parametry miejsca</h2>
                 
                 <div class="input-group">
                     <div class="form-group">
@@ -458,7 +458,7 @@ object-fit: contain;
             </div>
             
             <div class="form-section">
-                <h2>Skanowanie i ilość</h2>
+                <h2>Parmetry produktu</h2>
                 
                 <div class="form-group">
                     <label for="skan">Skanuj kod produktu:</label>
@@ -600,13 +600,21 @@ Quagga.onDetected(function(result) {
 			kod = lokalizacjeMap[kod];
 		}
 	} else if (currentScannerTarget === 'produkt') {
-		// Wymuś prefiks 761 i odfiltrowanie zbyt wąskich kodów
-		if (!kod.startsWith('761') || szerokosc < 50) { // dopasuj próg szerokości wg własnych testów
-			console.log('Odrzucono kod:', kod, 'Szerokość:', szerokosc);
-			return; // ignoruj ten odczyt
+		// Priorytet dla kodów z prefiksem 761 (np. produkty)
+		if (!kod.startsWith('761')) {
+			// Ignoruj wszystko inne – np. '01928...'
+			console.log('Odrzucono kod:', kod);
+			return;
+		}
+		
+		// Opcjonalnie: filtruj też po szerokości (by nie brać małych, niewyraźnych kodów)
+		if (szerokosc < 50) {
+			console.log('Odrzucono kod ze względu na szerokość:', kod, 'Szerokość:', szerokosc);
+			return;
 		}
 	}
 
+	// Jeśli przeszło filtry, uznajemy za właściwy kod
 	document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
 	document.getElementById(currentScannerTarget).value = kod;
 
