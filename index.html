@@ -697,13 +697,13 @@ window.generujCiag = function () {
                 isScannerActive = true;
                 
                 // Automatyczne zatrzymanie po 30 sekundach dla oszczędności baterii
-                setTimeout(() => {
-                    if (isScannerActive) {
-                        Quagga.stop();
-                        document.getElementById('barcode-result').textContent = 'Skaner został automatycznie wyłączony po 30 sekundach';
-                        isScannerActive = false;
-                    }
-                }, 30000);
+                //setTimeout(() => {
+                    //if (isScannerActive) {
+                        //Quagga.stop();
+                        //document.getElementById('barcode-result').textContent = 'Skaner został automatycznie wyłączony po 30 sekundach';
+                        //isScannerActive = false;
+                    //}
+                //}, 30000);
             });
         }
 	
@@ -814,14 +814,14 @@ window.generujCiag = function () {
         }
         
         // Obsługa zmiany orientacji ekranu
-        //window.addEventListener('orientationchange', function() {
-            //if (modal.style.display === 'block' && isScannerActive) {
-               // Quagga.stop();
-                //setTimeout(() => {
-                 //   startCamera();
-               // }, 300);
-            //}
-        //});
+        window.addEventListener('orientationchange', function() {
+            if (modal.style.display === 'block' && isScannerActive) {
+                Quagga.stop();
+                setTimeout(() => {
+                    startCamera();
+                }, 300);
+            }
+        });
     </script>
 </body>
 </html>
