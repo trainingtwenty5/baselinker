@@ -52,12 +52,56 @@ window.generujCiag = function () {
         day: '2-digit'
     }).split('.').reverse().join('-');
 
-    const wynik = `${data},${katalog},${magazyn},${skan},${lokalizacja},${ilosc}`;
+    // Check if we're in multiple locations mode
+    const isMultipleLocations = document.getElementById('multiple-locations').checked;
+    let locationsToUse = lokalizacja;
+    
+    if (isMultipleLocations) {
+        // Get all locations from the display
+        const locationsDisplay = document.getElementById('multiple-locations-display');
+        if (locationsDisplay) {
+            locationsToUse = locationsDisplay.textContent;
+        }
+    }
+
+    const wynik = `${data},${katalog},${magazyn},${skan},${locationsToUse},${ilosc}`;
 
     ostatniWygenerowanyCiag = wynik;
     document.getElementById('wynik').textContent = wynik;
     document.getElementById('result').style.display = 'block';
 }
+
+
+
+
+function toggleScanMode(isMultiple) {
+    const singleCheckbox = document.getElementById('single-location');
+    const multipleCheckbox = document.getElementById('multiple-locations');
+    const locationsDisplay = document.getElementById('multiple-locations-display');
+    
+    if (isMultiple) {
+        singleCheckbox.checked = false;
+        multipleCheckbox.checked = true;
+        if (locationsDisplay) {
+            locationsDisplay.style.display = 'block';
+            // Clear the input field when switching to multiple mode
+            document.getElementById('lokalizacja').value = '';
+        }
+    } else {
+        singleCheckbox.checked = true;
+        multipleCheckbox.checked = false;
+        if (locationsDisplay) {
+            locationsDisplay.style.display = 'none';
+            // Clear the display when switching to single mode
+            locationsDisplay.textContent = '';
+        }
+    }
+}
+
+
+
+
+
 
   window.zapiszWynik = async function () {
     if (!ostatniWygenerowanyCiag) {
@@ -570,7 +614,37 @@ window.generujCiag = function () {
         }		
 		
 		
-		
+      
+/* Style dla checkboxów trybu skanowania */
+.scan-mode {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.scan-mode label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+.scan-mode input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+}
+
+#multiple-locations-display {
+    display: none;
+    background: #e8f4fc;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    border: 1px solid #3498db;
+}
 		
     </style>
 </head>
@@ -624,6 +698,22 @@ window.generujCiag = function () {
 
 				<div class="form-group">
 					<label for="lokalizacja">Skanuj lokalizację:</label>
+					
+					
+					                    <div class="scan-mode">
+                        <label>
+                            <input type="checkbox" id="single-location" checked onchange="toggleScanMode(false)">
+                            <span>Pojedyncza lokalizacja</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" id="multiple-locations" onchange="toggleScanMode(true)">
+                            <span>Wiele lokalizacji</span>
+                        </label>
+                    </div>
+					<div id="multiple-locations-display"></div>
+					
+					
+					
 					<div class="scan-section">
 						<input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację">
 						<button class="camera-btn" id="open-camera-location">
@@ -968,7 +1058,39 @@ Quagga.onDetected(function(result) {
             console.log('Kod lokalizacji nierozpoznany:', kod);
             return;
         }
+
+        // Handle multiple locations mode
+        const isMultiple = document.getElementById('multiple-locations').checked;
+        if (isMultiple) {
+            const locationsDisplay = document.getElementById('multiple-locations-display');
+            let currentLocations = locationsDisplay.textContent;
+            
+            if (currentLocations) {
+                currentLocations += '; ' + kod;
+            } else {
+                currentLocations = kod;
+            }
+            
+            locationsDisplay.textContent = currentLocations;
+            document.getElementById('lokalizacja').value = 'Wiele lokalizacji'; // Just for visual feedback
+        } else {
+            document.getElementById('lokalizacja').value = kod;
+        }
+    } else {
+        document.getElementById(currentScannerTarget).value = kod;
     }
+
+    // Zabezpieczenie przed wielokrotnym odczytem
+    skanowanieZakonczone = true;
+    document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
+
+    setTimeout(() => {
+        if (!document.getElementById('multiple-locations').checked) {
+            closeScanner();
+        }
+        skanowanieZakonczone = false;
+    }, 500);
+});
 
     // Zabezpieczenie przed wielokrotnym odczytem
     skanowanieZakonczone = true;
