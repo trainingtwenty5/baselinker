@@ -32,7 +32,6 @@
 
   let ostatniWygenerowanyCiag = '';
 
-
 window.generujCiag = function () {
     const katalog = document.getElementById('katalog').value;
     const magazyn = document.getElementById('magazyn').value;
@@ -651,33 +650,48 @@ function toggleScanMode(isMultiple) {
             <div class="form-section">
                 <h2>Parmetry produktu</h2>
                 
-					<div class="form-group">
-						<label for="lokalizacja">Skanuj lokalizację:</label>
-						
-						<div class="scan-mode">
-							<label>
-								<input type="checkbox" id="single-location" checked onchange="toggleScanMode(false)">
-								<span>Pojedyncza lokalizacja</span>
-							</label>
-							<label>
-								<input type="checkbox" id="multiple-locations" onchange="toggleScanMode(true)">
-								<span>Wiele lokalizacji</span>
-							</label>
-						</div>
-						
-						<div class="scan-section">
-							<input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację">
-							<button class="camera-btn" id="open-camera-location">
-								<i class="fas fa-camera"></i> Odczyt skanera
-							</button>
-							<button class="keyboard-btn" onclick="document.getElementById('lokalizacja').focus()">
-								<i style="margin-right:5px;" class="fas fa-keyboard"></i> Klawiatura
-							</button>
-						</div>
+				<div class="form-group">
+					<label for="skan">Skanuj kod produktu:</label>
+					<div class="scan-section">
+						<input type="text" id="skan" class="scan-input" placeholder="Zeskanuj kod lub wpisz ręcznie">
+						<button class="camera-btn" id="open-camera-product">
+							<i class="fas fa-camera"></i> Odczyt skanera
+						</button>
+						<button class="keyboard-btn" onclick="document.getElementById('skan').focus()">
+							<i style="margin-right:5px;" class="fas fa-keyboard"></i>  Klawiatura
+						</button>
 					</div>
+					<div class="info-text">Możesz zeskanować kod za pomocą telefonu</div>
+				</div>
 
-
-
+<div class="form-group">
+    <label for="lokalizacja">Skanuj lokalizację:</label>
+    
+    <div class="scan-mode">
+        <label>
+            <input type="checkbox" id="single-location" checked onchange="toggleScanMode(false)">
+            <span>Pojedyncza lokalizacja</span>
+        </label>
+        <label>
+            <input type="checkbox" id="multiple-locations" onchange="toggleScanMode(true)">
+            <span>Wiele lokalizacji</span>
+        </label>
+    </div>
+    
+    <div class="scan-section">
+        <input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację">
+        <button class="camera-btn" id="open-camera-location">
+            <i class="fas fa-camera"></i> Odczyt skanera
+        </button>
+        <button class="keyboard-btn" onclick="document.getElementById('lokalizacja').focus()">
+            <i style="margin-right:5px;" class="fas fa-keyboard"></i> Klawiatura
+        </button>
+    </div>
+</div>
+				
+				
+				
+				
                 
                 <div class="form-group">
 				<div class="scan-section">
