@@ -613,6 +613,31 @@ function toggleScanMode(isMultiple) {
     margin-top: 10px;
     border: 1px solid #3498db;
 }
+
+.input-with-clear {
+    position: relative;
+    display: inline-block;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.clear-btn:hover {
+    color: #333;
+}
+
+.scan-input {
+    padding-right: 30px; /* Zostaw miejsce dla przycisku czyszczenia */
+}
     </style>
 </head>
 <body>
@@ -678,7 +703,12 @@ function toggleScanMode(isMultiple) {
     </div>
     
     <div class="scan-section">
-        <input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację">
+        <div class="input-with-clear">
+            <input type="text" id="lokalizacja" class="scan-input" placeholder="Zeskanuj lokalizację">
+            <button class="clear-btn" onclick="clearLocationField()" title="Wyczyść pole">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
         <button class="camera-btn" id="open-camera-location">
             <i class="fas fa-camera"></i> Odczyt skanera
         </button>
@@ -1182,7 +1212,9 @@ function closeScanner() {
     }
 }	
 		
-		
+function clearLocationField() {
+    document.getElementById('lokalizacja').value = '';
+}		
 		
 		
     </script>
