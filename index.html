@@ -1049,13 +1049,8 @@ Quagga.onDetected(function(result) {
     skanowanieZakonczone = true;
     document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
 
-    setTimeout(() => {
-        // Zamykamy skaner tylko w trybie pojedynczym
-        if (!document.getElementById('multiple-locations').checked) {
-            closeScanner();
-        }
-        skanowanieZakonczone = false;
-    }, 500);
+    // Natychmiastowe zamknięcie kamery
+    closeScanner();
 });
 
 
