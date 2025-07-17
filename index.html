@@ -771,7 +771,7 @@ function toggleScanMode(isMultiple) {
                     <button class="size-btn" id="increase-zoom">+</button>
                 </div>
             </div>
-            
+            <button id="startScannerButton" onclick="initScanner()">Rozpocznij skanowanie</button>
             <div id="camera-container">
                 <div class="loading">Ładowanie kamery...</div>
                 <video id="camera-preview" playsinline></video>
@@ -1049,14 +1049,23 @@ Quagga.onDetected(function(result) {
     skanowanieZakonczone = true;
     document.getElementById('barcode-result').textContent = `Zeskanowano: ${kod}`;
 
+    // Zawsze zamykamy skaner po wykryciu kodu
     setTimeout(() => {
-        // Zamykamy skaner tylko w trybie pojedynczym
-        if (!document.getElementById('multiple-locations').checked) {
-            closeScanner();
-        }
+        closeScanner();
         skanowanieZakonczone = false;
+        
+        // W trybie wielu lokalizacji pokazujemy przycisk do ponownego włączenia skanera
+        if (document.getElementById('multiple-locations').checked) {
+            showRescanButton();
+        }
     }, 500);
 });
+
+function showRescanButton() {
+    const scanButton = document.getElementById('startScannerButton');
+    scanButton.textContent = 'Skanuj kolejny kod';
+    scanButton.style.display = 'block';
+}
 
 
 
