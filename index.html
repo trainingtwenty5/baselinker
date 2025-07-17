@@ -52,7 +52,7 @@ window.generujCiag = function () {
         day: '2-digit'
     }).split('.').reverse().join('-');
 
-    const wynik = `${data};${katalog};${magazyn};${skan};${lokalizacja};${ilosc}`;
+    const wynik = `${data},${katalog},${magazyn},${skan},${lokalizacja},${ilosc}`;
 
     ostatniWygenerowanyCiag = wynik;
     document.getElementById('wynik').textContent = wynik;
